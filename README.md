@@ -1,0 +1,2 @@
+# 2024_BEOTKKOTTHON_TEAM_7_FE
+스터디 메이트 FE 레포지토리 
