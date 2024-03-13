@@ -5,6 +5,8 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
   * {
     box-sizing: border-box;
+    max-width: 430px;
+    max-height: 932px;
   }
   a {
   color: inherit;
@@ -13,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
   li {
   list-style: none;
   }
+  body {
+      margin: 0; line-height: normal;
+    }
+  
 
   button{
     background: none;
