@@ -1,21 +1,34 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import mainLogo from '../../assets/svgs/mainLogo.svg';
 import menuBar from '../../assets/svgs/menu.svg';
-import findStudy from '../../assets/svgs/findStudy.svg';
-import findMento from '../../assets/svgs/findMento.svg';
-import home from '../../assets/svgs/home.svg';
-import studyList from '../../assets/svgs/studyList.svg';
-import myPage from '../../assets/svgs/myPage.svg';
+
 import { Outlet, useNavigate } from 'react-router-dom';
+
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function Layout() {
   const navigate = useNavigate();
+
+  const [active, setActive] = useState('');
+
+  const handleClick = (value) => {
+    navigate(`/${value}`);
+    setActive(value);
+  };
+
   return (
     <Wrapper>
       <HeaderWrapper>
         <MainLogoWrapper>
           <MainLogoImg src={mainLogo} onClick={() => navigate('/')} />
-          <MainLogoTitle>Study mate</MainLogoTitle>
+          <MainLogoTitle onClick={() => navigate('/')}>
+            Study mate
+          </MainLogoTitle>
         </MainLogoWrapper>
         <MenuBar>
           <MenuBarIcon src={menuBar} />
@@ -23,27 +36,44 @@ export default function Layout() {
       </HeaderWrapper>
       <Outlet />
       <BottomNavBarWrapper>
-        <BottomIconBox>
-          <BottomIcon src={findStudy} />
+        <BottomIconBox
+          value="find-study"
+          onClick={() => handleClick('find-study')}
+          active={active === 'find-study'}
+        >
+          <MenuBookIcon />
           <BottomIconTitle>스터디원 찾기</BottomIconTitle>
         </BottomIconBox>
-        <BottomIconBox>
-          <BottomIcon src={findMento} />
+        <BottomIconBox
+          value="find-mentoti"
+          onClick={() => handleClick('find-mentoti')}
+          active={active === 'find-mentoti'}
+        >
+          <PeopleAltIcon />
           <BottomIconTitle>멘토/멘티 찾기</BottomIconTitle>
         </BottomIconBox>
-        <BottomIconBox>
-          <BottomIcon src={home} />
+        <BottomIconBox
+          value=""
+          onClick={() => handleClick('')}
+          active={active === ''}
+        >
+          <HomeIcon />
           <BottomIconTitle>홈</BottomIconTitle>
         </BottomIconBox>
-        <BottomIconBox>
-          <BottomIcon
-            src={studyList}
-            style={{ height: '21px', width: '21pxs', marginBottom: '10%' }}
-          />
+        <BottomIconBox
+          value="study-lists"
+          onClick={() => handleClick('study-lists')}
+          active={active === 'study-lists'}
+        >
+          <FactCheckIcon />
           <BottomIconTitle>스터디 리스트</BottomIconTitle>
         </BottomIconBox>
-        <BottomIconBox>
-          <BottomIcon src={myPage} />
+        <BottomIconBox
+          value="login"
+          onClick={() => handleClick('login')}
+          active={active === 'login'}
+        >
+          <PersonIcon />
           <BottomIconTitle>마이페이지</BottomIconTitle>
         </BottomIconBox>
       </BottomNavBarWrapper>
@@ -90,7 +120,7 @@ const MenuBarIcon = styled.img`
   width: 21px;
 `;
 
-const BottomNavBarWrapper = styled.div`
+const BottomNavBarWrapper = styled.nav`
   padding-left: 10px;
   padding-right: 10px;
   box-shadow: 0px -2px 1px -1px rgba(0, 0, 0, 0.1);
@@ -98,7 +128,7 @@ const BottomNavBarWrapper = styled.div`
   height: 60px;
 
   bottom: 0px;
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -107,7 +137,8 @@ const BottomNavBarWrapper = styled.div`
 const BottomIconBox = styled.button`
   height: 50px;
   width: 58px;
-  color: #919191;
+
+  color: ${({ active }) => (active ? '#39AF37' : '#919191')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,8 +147,4 @@ const BottomIconBox = styled.button`
 const BottomIconTitle = styled.span`
   font-size: 10px;
   margin-top: 2px;
-`;
-const BottomIcon = styled.img`
-  height: 28px;
-  width: 28px;
 `;
