@@ -1,3 +1,3 @@
 export default function FindMentoti() {
-  return <div>1</div>;
+  return <div>멘토멘티 찾기 페이지</div>;
 }
