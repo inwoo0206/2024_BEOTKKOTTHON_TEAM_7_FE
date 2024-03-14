@@ -38,7 +38,7 @@ const LoginTitle = styled.span`
 const GoogleButtonWrapper = styled.button`
   position: absolute;
   bottom: 15%;
-  padding: 10px 120px;
+  padding: 10px 100px;
   border-radius: 20px;
   display: flex;
   justify-content: center;
