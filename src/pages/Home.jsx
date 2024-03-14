@@ -1,3 +1,9 @@
+import MainCarousel from '../components/Home/MainCarousel';
+
 export default function Home() {
-  return <div>Home!</div>;
+  return (
+    <div>
+      <MainCarousel />
+    </div>
+  );
 }
