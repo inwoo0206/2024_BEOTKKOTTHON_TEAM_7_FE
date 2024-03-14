@@ -41,7 +41,7 @@ export default function Layout() {
           onClick={() => handleClick('find-study')}
           active={active === 'find-study'}
         >
-          <MenuBookIcon />
+          <MenuBookIcon fontSize="medium" />
           <BottomIconTitle>스터디원 찾기</BottomIconTitle>
         </BottomIconBox>
         <BottomIconBox
@@ -49,7 +49,7 @@ export default function Layout() {
           onClick={() => handleClick('find-mentoti')}
           active={active === 'find-mentoti'}
         >
-          <PeopleAltIcon />
+          <PeopleAltIcon fontSize="medium" />
           <BottomIconTitle>멘토/멘티 찾기</BottomIconTitle>
         </BottomIconBox>
         <BottomIconBox
@@ -57,7 +57,7 @@ export default function Layout() {
           onClick={() => handleClick('')}
           active={active === ''}
         >
-          <HomeIcon />
+          <HomeIcon fontSize="medium" />
           <BottomIconTitle>홈</BottomIconTitle>
         </BottomIconBox>
         <BottomIconBox
@@ -65,7 +65,7 @@ export default function Layout() {
           onClick={() => handleClick('study-lists')}
           active={active === 'study-lists'}
         >
-          <FactCheckIcon />
+          <FactCheckIcon fontSize="medium" />
           <BottomIconTitle>스터디 리스트</BottomIconTitle>
         </BottomIconBox>
         <BottomIconBox
@@ -73,7 +73,7 @@ export default function Layout() {
           onClick={() => handleClick('login')}
           active={active === 'login'}
         >
-          <PersonIcon />
+          <PersonIcon fontSize="medium" />
           <BottomIconTitle>마이페이지</BottomIconTitle>
         </BottomIconBox>
       </BottomNavBarWrapper>
@@ -92,7 +92,6 @@ const HeaderWrapper = styled.div`
   justify-content: center;
   align-items: center;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  /* position: sticky; */
 `;
 const MainLogoWrapper = styled.div`
   margin: 0 auto;
@@ -109,7 +108,12 @@ const MainLogoImg = styled.img`
 `;
 
 const MainLogoTitle = styled.h2`
+  color: #000;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
   font-weight: 800;
+  line-height: normal;
   margin-left: 1%;
   cursor: pointer;
 `;
@@ -125,7 +129,7 @@ const BottomNavBarWrapper = styled.nav`
   padding-right: 10px;
   box-shadow: 0px -2px 1px -1px rgba(0, 0, 0, 0.1);
   width: 100%;
-  height: 60px;
+  height: 80px;
 
   bottom: 0px;
   position: fixed;
@@ -135,8 +139,8 @@ const BottomNavBarWrapper = styled.nav`
 `;
 
 const BottomIconBox = styled.button`
-  height: 50px;
-  width: 58px;
+  height: 55px;
+  width: 62px;
 
   color: ${({ active }) => (active ? '#39AF37' : '#919191')};
   display: flex;
