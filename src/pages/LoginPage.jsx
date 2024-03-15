@@ -1,15 +1,28 @@
 import styled from 'styled-components';
 import googlImg from '../assets/svgs/google.svg';
 
+import { useGoogleLogin } from '@react-oauth/google';
+
 export default function Login() {
+  const handleGoogleLogin = useGoogleLogin({
+    // scope: 'email profile',
+    onSuccess: async (res) => {
+      // console.log(res.access_token);
+      console.log(res);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    // flow: 'auth-code',
+  });
+
   return (
     <LoginWrapper>
       <LoginTitle>
         <span>로그인</span> 후에
       </LoginTitle>
       <LoginTitle>이용가능한 서비스입니다!</LoginTitle>
-
-      <GoogleButtonWrapper>
+      <GoogleButtonWrapper onClick={handleGoogleLogin}>
         <GoogleButton src={googlImg} />
         <GoogleSpan>구글로 시작하기</GoogleSpan>
       </GoogleButtonWrapper>
