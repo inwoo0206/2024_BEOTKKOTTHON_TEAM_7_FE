@@ -8,7 +8,9 @@ export default function Login() {
     onSuccess: async (res) => {
       // const token = res.access_token;
       console.log(res);
-      const response = api.get('/oauth2/authorization/google');
+      const response = api.get('/oauth2/authorization/google', {
+        headers: res.access_token,
+      });
       console.log(response);
     },
     onError: (error) => {

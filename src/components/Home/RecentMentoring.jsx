@@ -2,38 +2,38 @@ import styled from 'styled-components';
 import RecentMentoringBox from './RecentMentoringBox';
 import { useNavigate } from 'react-router-dom';
 
-// const data = [
-//   {
-//     id: 1,
-//     tags: ['어학', '멘토', '한번'],
-//     title: 'C 언어 A+ 입니다 들어오세요.',
-//   },
-//   {
-//     id: 2,
-//     tags: ['어학', '멘토', '한번'],
-//     title: 'C 언어 A+ 입니다 들어오세요.',
-//   },
-//   {
-//     id: 3,
-//     tags: ['어학', '멘토', '한번'],
-//     title: 'C 언어 A+ 입니다 들어오세요.',
-//   },
-//   {
-//     id: 4,
-//     tags: ['어학', '멘토', '한번'],
-//     title: 'C 언어 A+ 입니다 들어오세요.',
-//   },
-//   {
-//     id: 5,
-//     tags: ['어학', '멘토', '한번'],
-//     title: 'C 언어 A+ 입니다 들어오세요.',
-//   },
-//   {
-//     id: 6,
-//     tags: ['어학', '멘토', '한번'],
-//     title: 'C 언어 A+ 입니다 들어오세요.',
-//   },
-// ];
+const data = [
+  {
+    id: 1,
+    tags: ['어학', '멘토', '한번'],
+    title: 'C 언어 A+ 입니다 들어오세요.',
+  },
+  {
+    id: 2,
+    tags: ['어학', '멘토', '한번'],
+    title: 'C 언어 A+ 입니다 들어오세요.',
+  },
+  {
+    id: 3,
+    tags: ['어학', '멘토', '한번'],
+    title: 'C 언어 A+ 입니다 들어오세요.',
+  },
+  {
+    id: 4,
+    tags: ['어학', '멘토', '한번'],
+    title: 'C 언어 A+ 입니다 들어오세요.',
+  },
+  {
+    id: 5,
+    tags: ['어학', '멘토', '한번'],
+    title: 'C 언어 A+ 입니다 들어오세요.',
+  },
+  {
+    id: 6,
+    tags: ['어학', '멘토', '한번'],
+    title: 'C 언어 A+ 입니다 들어오세요.',
+  },
+];
 
 export default function RecentMentoring() {
   const navigate = useNavigate();
@@ -44,12 +44,9 @@ export default function RecentMentoring() {
         <MoreBox onClick={() => navigate('/find-mentoti')}>더보기 &gt;</MoreBox>
       </TitleBox>
       <ContentBox>
-        <RecentMentoringBox />
-        <RecentMentoringBox />
-        <RecentMentoringBox />
-        <RecentMentoringBox />
-        <RecentMentoringBox />
-        <RecentMentoringBox />
+        {data.map((item) => {
+          return <RecentMentoringBox key={item.id} />;
+        })}
       </ContentBox>
     </Wrapper>
   );
@@ -89,4 +86,5 @@ const ContentBox = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  background-color: white;
 `;
