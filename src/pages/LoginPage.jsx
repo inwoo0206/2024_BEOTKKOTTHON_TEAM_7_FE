@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import googlImg from '../assets/svgs/google.svg';
-
+import { api } from '../utils/customAxios';
 import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const handleGoogleLogin = useGoogleLogin({
-    // scope: 'email profile',
     onSuccess: async (res) => {
-      // console.log(res.access_token);
+      // const token = res.access_token;
       console.log(res);
+      const response = api.get('/oauth2/authorization/google');
+      console.log(response);
     },
     onError: (error) => {
       console.log(error);
     },
-    // flow: 'auth-code',
   });
 
   return (
