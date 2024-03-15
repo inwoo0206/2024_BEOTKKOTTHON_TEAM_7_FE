@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import mainLogo from '../../assets/svgs/mainLogo.svg';
-import menuBar from '../../assets/svgs/menu.svg';
 
 import { Outlet, useNavigate } from 'react-router-dom';
 
@@ -30,9 +29,7 @@ export default function Layout() {
             Study mate
           </MainLogoTitle>
         </MainLogoWrapper>
-        <MenuBar>
-          <MenuBarIcon src={menuBar} />
-        </MenuBar>
+        <MenuBar></MenuBar>
       </HeaderWrapper>
       <Outlet />
       <BottomNavBarWrapper>
@@ -119,10 +116,6 @@ const MainLogoTitle = styled.h2`
 `;
 
 const MenuBar = styled.div``;
-const MenuBarIcon = styled.img`
-  height: 21px;
-  width: 21px;
-`;
 
 const BottomNavBarWrapper = styled.nav`
   padding-left: 10px;
