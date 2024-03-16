@@ -19,11 +19,12 @@ const Wrapper = styled.div`
   flex-shrink: 0;
   border-radius: 4px;
   background: #fff;
-  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 30px;
+  margin-bottom: 5px;
 `;
 const StudyName = styled.span`
   color: #4d4d4d;
