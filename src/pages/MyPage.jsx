@@ -43,6 +43,7 @@ const MainContentWrapper = styled.div`
 
 const Wrapper = styled.div`
   /* background-color: #f0f0f0; */
+  overflow: hidden;
 `;
 
 const ProfileBox = styled.div`
