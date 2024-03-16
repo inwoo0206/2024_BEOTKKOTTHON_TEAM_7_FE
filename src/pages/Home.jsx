@@ -19,6 +19,7 @@ export default function Home() {
 }
 
 const Wrapper = styled.div`
-  height: 100dvh;
+  height: 100%;
   background-color: #f9f9f9;
+  overflow: hidden;
 `;

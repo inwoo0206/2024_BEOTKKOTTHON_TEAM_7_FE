@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function PopularStudy() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <Title>실시간 인기글</Title>
@@ -18,6 +20,9 @@ export default function PopularStudy() {
             <Tag>어학</Tag>
             <Tag>어학</Tag>
           </TagBox>
+        </PopularBox>
+        <PopularBox>
+          <button onClick={() => navigate('/login')}>로그인(테스트용)</button>
         </PopularBox>
       </PopularBoxs>
     </Wrapper>
@@ -42,7 +47,7 @@ const PopularBoxs = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -53,6 +58,7 @@ const PopularBox = styled.div`
   background: var(--light-white-white-light, #fff);
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
   padding: 10px;
+  margin-bottom: 15px;
 `;
 
 const ProfileContent = styled.div`
