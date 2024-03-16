@@ -52,8 +52,8 @@ export default function BottomNavBar() {
       </BottomIconBox>
       <BottomIconBox
         value="login"
-        onClick={() => handleClick('login')}
-        active={active === 'login'}
+        onClick={() => handleClick('mypage')}
+        active={active === 'mypage'}
       >
         <PersonIcon fontSize="medium" />
         <BottomIconTitle>마이페이지</BottomIconTitle>

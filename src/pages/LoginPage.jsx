@@ -5,17 +5,15 @@ import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const handleGoogleLogin = useGoogleLogin({
-    onSuccess: async (res) => {
-      // const token = res.access_token;
-      console.log(res);
-      const response = api.get('/oauth2/authorization/google', {
-        headers: res.access_token,
-      });
-      console.log(response);
+    onSuccess: async (googleRes) => {
+      console.log(googleRes);
+      const backResponse = await api.post('/login/oauth2/code');
+      console.log(backResponse);
     },
     onError: (error) => {
       console.log(error);
     },
+    // flow: 'auth-code',
   });
 
   return (

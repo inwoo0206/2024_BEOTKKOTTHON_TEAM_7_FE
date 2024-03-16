@@ -1,25 +1,49 @@
 import styled from 'styled-components';
-
 import test from '../assets/svgs/google.svg';
+import MyStudy from '../components/Mypage/MyStudy';
+import MyEvaluation from '../components/Mypage/MyEvaluation';
 
 export default function MyPage() {
   return (
     <Wrapper>
       <ProfileBox>
+        <ProfleImg src={test} />
+        <Nickname>닉네임</Nickname>
+        <Email>sdkkrtk123@gmail.com</Email>
+      </ProfileBox>
+      <MainContentWrapper>
+        <MyStudy title="내가 모집한 스터디" />
+        <MyStudy title="내가 참여한 멘토링" />
+        <MyEvaluation />
+      </MainContentWrapper>
+      <BottomWrapper>
         <DeleteBox>
           <OutSpan>로그아웃</OutSpan>
           <span style={{ fontSize: '10px' }}>ㅣ</span>
           <OutSpan>회원탈퇴</OutSpan>
         </DeleteBox>
-        <ProfleImg src={test} />
-        <Nickname>닉네임</Nickname>
-        <Email>sdkkrtk123@gmail.com</Email>
-      </ProfileBox>
+      </BottomWrapper>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.div``;
+const BottomWrapper = styled.div`
+  background-color: #f0f0f0;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MainContentWrapper = styled.div`
+  width: 100%;
+  height: 420px;
+  background-color: white;
+`;
+
+const Wrapper = styled.div`
+  /* background-color: #f0f0f0; */
+`;
 
 const ProfileBox = styled.div`
   height: 187px;
@@ -56,9 +80,6 @@ const Email = styled.span`
 `;
 
 const DeleteBox = styled.div`
-  top: 29px;
-  right: 17px;
-  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;

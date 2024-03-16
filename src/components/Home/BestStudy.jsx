@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MultiCarousel from './MultiCarousel';
+
 import BestStudyBox from './BestStudyBox';
 
 const data = [
@@ -12,14 +12,25 @@ export default function BestStudy() {
   return (
     <Wrapper>
       <Title>우수 스터디</Title>
-      <MultiCarousel>
+
+      <StudyBox>
         {data.map((item) => (
           <BestStudyBox key={item.id} title={item.title} id={item.id} />
         ))}
-      </MultiCarousel>
+      </StudyBox>
     </Wrapper>
   );
 }
+const StudyBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const Wrapper = styled.div`
   padding: 15px;
