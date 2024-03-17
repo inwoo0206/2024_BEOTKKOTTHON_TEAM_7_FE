@@ -1,20 +1,24 @@
 import styled from 'styled-components';
 import googlImg from '../assets/svgs/google.svg';
 import { api } from '../utils/customAxios';
-import { useGoogleLogin } from '@react-oauth/google';
+// import { useGoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
-  const handleGoogleLogin = useGoogleLogin({
-    onSuccess: async (googleRes) => {
-      console.log(googleRes);
-      const backResponse = await api.post('/login/oauth2/code');
-      console.log(backResponse);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-    // flow: 'auth-code',
-  });
+  // const handleGoogleLogin = useGoogleLogin({
+  //   onSuccess: async (googleRes) => {
+  //     console.log(googleRes);
+  //     const backResponse = await api.post('/login/oauth2/code');
+  //     console.log(backResponse);
+  //   },
+  //   onError: (error) => {
+  //     console.log(error);
+  //   },
+  //   // flow: 'auth-code',
+  // });
+  const handleGoogleLogin = async () => {
+    const res = await api.get('/oauth2/authorization/google');
+    console.log(res);
+  };
 
   return (
     <LoginWrapper>
