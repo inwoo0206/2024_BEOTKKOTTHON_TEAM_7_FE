@@ -7,9 +7,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5173/',
+        target:
+          'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+        ws: true,
       },
     },
   },

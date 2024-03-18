@@ -7,6 +7,7 @@ import StudyLists from '../pages/StudyLists';
 import LoginPage from '../pages/LoginPage';
 import MyPageLayout from '../components/Layout/MyPageLayout';
 import MyPage from '../pages/MyPage';
+import StudyCompletedPage from '../pages/StudyCompletedPage';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/study-lists',
         element: <StudyLists />,
+      },
+      {
+        path: '/study-lists/:studyId',
+        element: <StudyCompletedPage />,
       },
       {
         path: '/login',

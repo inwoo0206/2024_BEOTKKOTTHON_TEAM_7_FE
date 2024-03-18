@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { api } from '../../utils/customAxios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -6,6 +7,8 @@ export default function PopularStudy() {
   const navigate = useNavigate();
 
   const test = async () => {
+    // const res = await api.get('/test');
+    // console.log(res);
     const res = await axios.get(
       'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/test',
     );
@@ -13,9 +16,7 @@ export default function PopularStudy() {
   };
 
   const studyTest = async () => {
-    const res = await axios.get(
-      'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/study',
-    );
+    const res = await api.get('/study');
     console.log(res);
   };
   return (
@@ -38,7 +39,9 @@ export default function PopularStudy() {
         </PopularBox>
         <PopularBox>
           <button onClick={() => navigate('/login')}>로그인(테스트용)</button>
-          <button onClick={test}>test</button>
+          <div>
+            <button onClick={test}>test</button>
+          </div>
           <div>
             <button onClick={studyTest}>스터디 테스트</button>
           </div>
