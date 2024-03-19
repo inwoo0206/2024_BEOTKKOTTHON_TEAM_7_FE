@@ -51,7 +51,7 @@ export default function BottomNavBar() {
         <BottomIconTitle>스터디 리스트</BottomIconTitle>
       </BottomIconBox>
       <BottomIconBox
-        value="login"
+        value="mypage"
         onClick={() => handleClick('mypage')}
         active={active === 'mypage'}
       >

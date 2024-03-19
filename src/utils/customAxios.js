@@ -8,7 +8,6 @@ const api = axios.create({
     Accept: 'application/json',
   },
   params: {},
-  withCredentials: true,
 });
 
 export { api };

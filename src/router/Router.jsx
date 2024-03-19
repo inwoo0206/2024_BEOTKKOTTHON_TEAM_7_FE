@@ -7,6 +7,8 @@ import StudyLists from '../pages/StudyLists';
 import LoginPage from '../pages/LoginPage';
 import MyPageLayout from '../components/Layout/MyPageLayout';
 import MyPage from '../pages/MyPage';
+import StudyCompletedPage from '../pages/StudyCompletedPage';
+import StudyCompletedUpload from '../pages/StudyCompletedUpload';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
       {
         path: '/study-lists',
         element: <StudyLists />,
+      },
+      {
+        path: '/study-lists/:studyId',
+        element: <StudyCompletedPage />,
+      },
+      {
+        path: '/study-lists/:studyId/post',
+        element: <StudyCompletedUpload />,
       },
       {
         path: '/login',

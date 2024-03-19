@@ -37,7 +37,7 @@ const BottomWrapper = styled.div`
 
 const MainContentWrapper = styled.div`
   width: 100%;
-  height: 420px;
+  height: 400px;
   background-color: white;
 `;
 
