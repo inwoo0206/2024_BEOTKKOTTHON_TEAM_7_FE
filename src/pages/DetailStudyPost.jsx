@@ -90,11 +90,11 @@ const PostItem = ({
       <PostStats>
         <LikesButton onClick={handleLikes}>
           <LikesIcon />
-          <StatsItem>좋아요 {likes}개</StatsItem>
+          <StatsItem>{likes}</StatsItem>
         </LikesButton>
         <CommentsStats>
           <CommentsIcon />
-          <StatsItem>댓글 {comments}개</StatsItem>
+          <StatsItem>{comments}</StatsItem>
         </CommentsStats>
       </PostStats>
     </PostItemBlock>
@@ -240,7 +240,7 @@ const LikesButton = styled.button`
   font-size: 12px;
   color: #666;
   margin-top: 50px;
-  gap: 10px;
+  gap: 5px;
 `;
 
 const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
@@ -254,7 +254,7 @@ const CommentsStats = styled.div`
   font-size: 12px;
   color: #666;
   margin-top: 50px;
-  gap: 10px;
+  gap: 5px;
 `;
 
 export default DetailStudyPost;

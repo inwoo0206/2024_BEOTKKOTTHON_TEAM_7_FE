@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useState } from "react";
+import ModalPage from "./ModalPage";
 
 const MentorListBlock = styled.div`
   display: flex;
@@ -62,8 +64,13 @@ const SubContainer = styled.div`
 `;
 
 const ListItem = ({ subject, score, profilePic, userName }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleClick = () => {
+    console.log("사진");
+    setModalOpen(true);
+  };
   return (
-    <ItemBlock>
+    <ItemBlock onClick={handleClick}>
       <UserInfo>
         <ProfilePic src={profilePic} alt="profile" />
         <div
@@ -87,6 +94,7 @@ const ListItem = ({ subject, score, profilePic, userName }) => {
           <StyledText>{score}</StyledText>
         </SubContainer>
       </TextBlock>
+      {modalOpen && <ModalPage setModalOpen={setModalOpen} />}
     </ItemBlock>
   );
 };
