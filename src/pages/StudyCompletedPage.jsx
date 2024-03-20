@@ -1,24 +1,17 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import CreateIcon from '@mui/icons-material/Create';
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 export default function StudyCompletedPage() {
   const { studyId } = useParams();
-  const navigate = useNavigate();
-
+  console.log(studyId);
   return (
     <Wrapper>
-      <Poststudy onClick={() => navigate(`/study-lists/${studyId}/post`)}>
-        <PostStudyButton>
-          <CreateIcon />
-        </PostStudyButton>
-      </Poststudy>
       <TitleWrapper>
         <StudyTitle>A팀</StudyTitle>
       </TitleWrapper>
@@ -30,20 +23,20 @@ export default function StudyCompletedPage() {
           <Img />
         </ImgWrapper>
         <StudyBoxWrapper>
-          <Accordion sx={{ marginBottom: '15px', borderRadius: '4px' }}>
+          <Accordion sx={{ marginBottom: "15px", borderRadius: "4px" }}>
             <AccordionSummary
               expandIcon={<ArrowDownwardIcon fontSize="small" />}
               aria-controls="panel1-content"
               id="panel1-header"
             >
               <Typography
-                sx={{ color: '#6D6D6D', fontSize: '14px', margin: '8px 0' }}
+                sx={{ color: "#6D6D6D", fontSize: "14px", margin: "8px 0" }}
               >
                 Accordion 1
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography sx={{ fontSize: '12px' }}>
+              <Typography sx={{ fontSize: "12px" }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing
                 elit.sadfaasdfsd Suspendisse malesuada lacus ex, sit amet
                 blandit leo lobortis eget.
@@ -56,10 +49,7 @@ export default function StudyCompletedPage() {
   );
 }
 
-const Wrapper = styled.div`
-  height: 100%;
-  overflow: hidden;
-`;
+const Wrapper = styled.div``;
 
 const TitleWrapper = styled.div`
   margin: 12px 27px;
@@ -98,7 +88,6 @@ const Img = styled.img`
   margin-right: 17px;
   height: 42px;
   width: 42px;
-  border-radius: 50%;
 `;
 const StudyBoxWrapper = styled.div`
   display: flex;
@@ -107,23 +96,4 @@ const StudyBoxWrapper = styled.div`
   justify-content: flex-start;
   height: 100%;
   width: 100%;
-  position: relative;
-`;
-
-const Poststudy = styled.div`
-  position: absolute;
-  bottom: 100px;
-  right: 28px;
-  height: 42px;
-  width: 42px;
-  background-color: #39af37;
-  border-radius: 50%;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const PostStudyButton = styled.button`
-  color: white;
 `;
