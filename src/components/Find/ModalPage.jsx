@@ -5,19 +5,30 @@ function ModalPage({ setModalOpen }) {
   const closeModal = (e) => {
     e.stopPropagation();
     setModalOpen(false);
-    console.log("pushed");
   };
   return (
-    <ModalContainer>
-      <button onClick={closeModal}>
-        <GoBackIcon />
-      </button>
+    <ModalContainer onClick={closeModal}>
+      <ModalBox>
+        <button onClick={closeModal}>
+          <GoBackIcon />
+        </button>
+      </ModalBox>
     </ModalContainer>
   );
 }
 export default ModalPage;
 
 const ModalContainer = styled.div`
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+`;
+
+const ModalBox = styled.div`
   width: 334px;
   height: 334px;
   background: white;

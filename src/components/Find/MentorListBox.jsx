@@ -66,8 +66,8 @@ const SubContainer = styled.div`
 const ListItem = ({ subject, score, profilePic, userName }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleClick = () => {
-    console.log("사진");
     setModalOpen(true);
+    console.log("사진");
   };
   return (
     <ItemBlock onClick={handleClick}>
