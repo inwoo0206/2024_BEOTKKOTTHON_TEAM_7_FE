@@ -2,9 +2,8 @@ import styled from "styled-components";
 import mainLogo from "../../assets/svgs/mainLogo.svg";
 
 import { Outlet, useNavigate } from "react-router-dom";
-import BottomNavBar from "./BottomNavBar";
 
-export default function Layout() {
+export default function Header() {
   const navigate = useNavigate();
 
   return (
@@ -19,7 +18,6 @@ export default function Layout() {
         <MenuBar></MenuBar>
       </HeaderWrapper>
       <Outlet />
-      <BottomNavBar />
     </Wrapper>
   );
 }
