@@ -32,6 +32,7 @@ export default function StudyCompletedUpload() {
         config,
       );
       console.log(res);
+      navigate(-1);
     } catch (error) {
       console.log(error);
     }
