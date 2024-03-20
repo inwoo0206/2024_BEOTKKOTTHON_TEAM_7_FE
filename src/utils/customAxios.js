@@ -8,6 +8,8 @@ const api = axios.create({
     Accept: 'application/json',
   },
   params: {},
+  withCredentials: true,
+  redirect: 'follow',
 });
 
 export { api };

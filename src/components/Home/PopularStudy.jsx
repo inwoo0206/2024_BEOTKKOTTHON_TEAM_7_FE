@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { api } from '../../utils/customAxios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,9 +8,7 @@ export default function PopularStudy() {
   const test = async () => {
     // const res = await api.get('/test');
     // console.log(res);
-    const res = await axios.get(
-      'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/test',
-    );
+    const res = await api.get('/test');
     console.log(res);
   };
 
