@@ -18,7 +18,6 @@ const Container = styled.div`
   padding: 20px;
   width: 100%;
   height: 844px;
-  background: linear-gradient(180deg, #dff0e0 0%, #fff 100%);
 `;
 
 const HeaderText = styled.div`

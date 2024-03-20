@@ -157,9 +157,9 @@ const PostItem = ({
       </TagList>
       <PostStats>
         <LikesIcon />
-        <StatsItem>좋아요 {likes}개</StatsItem>
+        <StatsItem>{likes}</StatsItem>
         <CommentsIcon />
-        <StatsItem>댓글 {comments}개</StatsItem>
+        <StatsItem>{comments}</StatsItem>
       </PostStats>
     </PostItemBlock>
   );
