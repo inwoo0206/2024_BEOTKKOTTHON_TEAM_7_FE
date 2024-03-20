@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
-import { TextField } from '@mui/material';
-import LinkIcon from '@mui/icons-material/Link';
-import { useNavigate, useParams } from 'react-router-dom';
-import { api } from '../utils/customAxios';
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { TextField } from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
+import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../utils/customAxios";
 
 export default function StudyCompletedUpload() {
   const { studyId } = useParams();
@@ -12,24 +12,24 @@ export default function StudyCompletedUpload() {
 
   const submitHandler = async (data) => {
     const formData = new FormData();
-    formData.append('image', data.photoURL[0]);
+    formData.append("image", data.photoURL[0]);
     formData.append(
       JSON.stringify({
         title: data.week,
         content: data.content,
-      }),
+      })
     );
     const config = {
       headers: {
         // Authorization: ...,  // 토큰 넣어주기
-        'Content-Type': 'multipart/form-data', // 데이터 형식 지정
+        "Content-Type": "multipart/form-data", // 데이터 형식 지정
       },
     };
     try {
       const res = await api.post(
         `/user/study/${studyId}/afterstudy/write`,
         formData,
-        config,
+        config
       );
       console.log(res);
       navigate(-1);
@@ -45,7 +45,7 @@ export default function StudyCompletedUpload() {
       <ContentWrapper>
         <ContentTitle>업로드 하려는 주 차</ContentTitle>
         <WeekWrapper>
-          <WeekInput type="number" {...register('week', { required: true })} />
+          <WeekInput type="number" {...register("week", { required: true })} />
           <span>주 차</span>
         </WeekWrapper>
         {/* <DetailWrapper>
@@ -53,16 +53,16 @@ export default function StudyCompletedUpload() {
         </DetailWrapper> */}
 
         <TextField
-          {...register('content', { required: true })}
+          {...register("content", { required: true })}
           id="outlined-multiline-static"
           label="내용을 입력해 주세요"
           multiline
           rows={10}
           sx={{
-            width: '100%',
-            marginTop: '31px',
+            width: "100%",
+            marginTop: "31px",
 
-            fontSize: '12px',
+            fontSize: "12px",
           }}
         />
         <LinkBox>
@@ -71,13 +71,13 @@ export default function StudyCompletedUpload() {
             name="photoURL"
             type="file"
             placeholder="업로드 하기"
-            {...register('photoURL')}
+            {...register("photoURL")}
           />
         </LinkBox>
 
         <BoxWrapper>
           <SubmmitButton
-            style={{ backgroundColor: '#DADADA' }}
+            style={{ backgroundColor: "#DADADA" }}
             onClick={() => navigate(-1)}
           >
             취소하기
@@ -127,7 +127,7 @@ const ContentWrapper = styled.div`
 `;
 const ContentTitle = styled.span`
   color: #858899;
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings: "clig" off, "liga" off;
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
