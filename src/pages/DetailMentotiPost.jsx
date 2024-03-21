@@ -3,7 +3,6 @@ import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import CommentList from "../components/Write/CommentList";
-import StudyPostCommit from "../components/Write/StudyPostComment";
 
 const DetailMentotiPost = () => {
   const location = useLocation();
@@ -27,7 +26,6 @@ const DetailMentotiPost = () => {
         />
       </PostListBlock>
       <CommentList />
-      <StudyPostCommit />
     </>
   );
 };

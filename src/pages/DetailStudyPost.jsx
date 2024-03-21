@@ -11,22 +11,16 @@ import { api } from "../utils/customAxios";
 
 const DetailStudyPost = () => {
   const { postId } = useParams();
-  console.log(postId);
 
-  const [postData, setPostData] = useState([]); // 스터디 포스트를 저장할 상태
+  const [postData, setPostData] = useState([]); // GET 한 스터디 포스트를 저장할 상태
   const [title, setTitle] = useState("");
+  // const [comments, setComments] = useState([]); // GET 한 스터디 포스트 댓글 저장해둘 상태
 
   const getDetailStudy = async () => {
     const response = await api.get(`/api/study/${postId}`);
     console.log(response);
     setPostData(response.data);
   };
-  /*
-  const getStudyPostComment = async () => {
-    const res = await api.get(`/api/study/${postId}`);
-    console.log(res);
-    setTitle(res.data);
-  };*/
 
   useEffect(() => {
     getDetailStudy();
@@ -35,6 +29,14 @@ const DetailStudyPost = () => {
   if (!postData) {
     return null;
   }
+
+  /*
+  const getStudyComment = async () => {
+    const res = await api.get();
+    console.log(res);
+    setComments(res.data);
+  }
+  */
 
   const handleInputCommit = (e) => {
     setTitle(e.target.value);
@@ -46,7 +48,7 @@ const DetailStudyPost = () => {
     };
 
     api
-      .post("/user/study/${postData.id}/talk/write", commentData)
+      .post(`/api/user/study/${postId}/talk/write`, commentData)
       .then((response) => {
         console.log("댓글이 성공적으로 전송되었습니다.", response.data);
         // 성공 후 처리 로직
@@ -55,6 +57,7 @@ const DetailStudyPost = () => {
         console.error("댓글 전송에 실패했습니다.", error);
         // 실패 시 처리 로직
       });
+    // console.log(commentData);
   };
 
   return (
