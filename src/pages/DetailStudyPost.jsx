@@ -1,4 +1,3 @@
-//import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
@@ -21,22 +20,24 @@ const DetailStudyPost = () => {
     console.log(response);
     setPostData(response.data);
   };
+  /*
+  const getStudyComment = async () => {
+    const res = await api.get(`/api/study/${postId}/talk`);
+    console.log(res);
+    setComments(res.data);
+  };
+  */
 
   useEffect(() => {
     getDetailStudy();
+    // getStudyComment();
   }, []);
 
   if (!postData) {
     return null;
   }
 
-  /*
-  const getStudyComment = async () => {
-    const res = await api.get();
-    console.log(res);
-    setComments(res.data);
-  }
-  */
+  // console.log(comments);
 
   const handleInputCommit = (e) => {
     setTitle(e.target.value);
@@ -77,7 +78,7 @@ const DetailStudyPost = () => {
           commentNum={postData.commentNum}
         />
       </PostBlock>
-      <CommentList />
+      <CommentList postId={postId} />
       <CommentContainer>
         <InputContainer>
           <TitleInput
