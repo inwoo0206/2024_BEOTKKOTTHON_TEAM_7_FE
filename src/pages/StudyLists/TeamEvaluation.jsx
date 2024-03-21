@@ -4,9 +4,30 @@ import bad from '../../assets/svgs/bad.svg';
 import best from '../../assets/svgs/best.svg';
 import { Rating } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { api } from '../../utils/customAxios';
 
 export default function TeamEvalutation() {
   const navigate = useNavigate();
+  const [selectedSticker, setSelectedSticker] = useState(null);
+
+  const [rating, setRating] = useState(5);
+  const [content, setContent] = useState('');
+
+  const handleChange = (event) => {
+    setSelectedSticker(event.target.id);
+  };
+
+  const handleSubmit = async () => {
+    console.log(selectedSticker, rating, content);
+
+    try {
+      await api.post();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Wrapper>
       <E></E>
@@ -14,31 +35,77 @@ export default function TeamEvalutation() {
         <Title>민준님과 스터디는 어떠셨나요?</Title>
         <Subtitle>거래 선호도는 나만 볼 수 있어요.</Subtitle>
         <StickerWrapper>
-          <StickerBox>
-            <img src={bad} alt="bad" />
+          <StickerBox
+            id="별로에요"
+            onClick={handleChange}
+            style={{
+              backgroundColor:
+                selectedSticker === '별로에요' ? '#359C3A' : '#c2c2c2',
+            }}
+          >
+            <img src={bad} alt="bad" id="별로에요" />
           </StickerBox>
-          <StickerBox>
-            <img src={good} alt="good" />
+          <StickerBox
+            id="좋아요"
+            onClick={handleChange}
+            style={{
+              backgroundColor:
+                selectedSticker === '좋아요' ? '#359C3A' : '#c2c2c2',
+            }}
+          >
+            <img src={good} alt="good" id="좋아요" />
           </StickerBox>
-          <StickerBox>
-            <img src={best} alt="best" />
+          <StickerBox
+            id="3"
+            onClick={handleChange}
+            style={{
+              backgroundColor:
+                selectedSticker === '최고에요' ? '#359C3A' : '#c2c2c2',
+            }}
+          >
+            <img src={best} alt="best" id="최고에요" />
           </StickerBox>
         </StickerWrapper>
         <StickerTitle>
-          <StickerSpan>별로에요</StickerSpan>
-          <StickerSpan>좋아요</StickerSpan>
-          <StickerSpan>최고에요</StickerSpan>
+          <StickerSpan
+            style={{
+              color: selectedSticker === '별로에요' ? '#359C3A' : '#c2c2c2',
+            }}
+          >
+            별로에요
+          </StickerSpan>
+          <StickerSpan
+            style={{
+              color: selectedSticker === '좋아요' ? '#359C3A' : '#c2c2c2',
+            }}
+          >
+            좋아요
+          </StickerSpan>
+          <StickerSpan
+            style={{
+              color: selectedSticker === '최고에요' ? '#359C3A' : '#c2c2c2',
+            }}
+          >
+            최고에요
+          </StickerSpan>
         </StickerTitle>
         <Title style={{ marginBottom: '20px' }}>얼마나 만족하시나요?</Title>
         <Rating
+          precision={0.5}
           name="size-large"
-          defaultValue={5}
+          //   defaultValue={5}
           size="large"
           sx={{ marginBottom: '40px' }}
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
         />
         <Title>스터디원에게 평가를 남겨보세요!</Title>
         <Subtitle>남겨주신 평가 메시지는 상대방의 프로필에 공개돼요.</Subtitle>
-        <EvaluateBox placeholder="내용을 입력해 주세요."></EvaluateBox>
+        <EvaluateBox
+          placeholder="내용을 입력해 주세요."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        ></EvaluateBox>
         <BoxWrapper>
           <SubmmitButton
             style={{ backgroundColor: '#DADADA' }}
@@ -46,7 +113,7 @@ export default function TeamEvalutation() {
           >
             취소하기
           </SubmmitButton>
-          <SubmmitButton>등록하기</SubmmitButton>
+          <SubmmitButton onClick={handleSubmit}>등록하기</SubmmitButton>
         </BoxWrapper>
       </ContentWrapper>
     </Wrapper>

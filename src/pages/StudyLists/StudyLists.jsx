@@ -1,42 +1,12 @@
 import styled from 'styled-components';
 import searchIcon from '../../assets/svgs/searchIcon.svg';
 import { useNavigate } from 'react-router-dom';
-
-const studyLists = [
-  {
-    id: 1,
-    title: '자바 스프링 테스트',
-    likes: 40,
-  },
-  {
-    id: 2,
-    title: '리액트 테스트',
-    likes: 46,
-  },
-  {
-    id: 3,
-    title: '으샤 테스트',
-    likes: 16,
-  },
-  {
-    id: 4,
-    title: '한국사 테스트',
-    likes: 6,
-  },
-  {
-    id: 5,
-    title: '영어 테스트',
-    likes: 26,
-  },
-  {
-    id: 6,
-    title: 'ㅇㄴㅁㄹㅇㄹㅁ 테스트',
-    likes: 96,
-  },
-];
+import { useStudyComplete } from '../../hooks/useStudyComplete';
 
 export default function StudyLists() {
   const navigate = useNavigate();
+
+  const data = useStudyComplete();
 
   return (
     <>
@@ -58,7 +28,7 @@ export default function StudyLists() {
           <SearchInput placeholder="스터디를 검색해보세요.(작성자,태그)" />
         </SearchBox>
         <TeamWrapper>
-          {studyLists.map((item) => {
+          {data?.data.map((item) => {
             const studyId = item.id;
             return (
               <StudyBox
@@ -68,9 +38,8 @@ export default function StudyLists() {
                 <StudyBoxContent>
                   <StudyTitle>{item.title}</StudyTitle>
                   <StudyTags>
-                    <Tag>멘토</Tag>
-                    <Tag>주3회</Tag>
-                    <Tag>어학</Tag>
+                    <Tag>{item.subject}</Tag>
+                    <Tag>{`주${item.frequency}`}</Tag>
                   </StudyTags>
                 </StudyBoxContent>
               </StudyBox>
