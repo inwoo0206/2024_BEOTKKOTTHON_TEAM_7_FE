@@ -12,7 +12,7 @@ export default function LoadingScreen() {
         display: display,
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        height: '100dvh',
         width: '100%',
         position: 'absolute',
       }}

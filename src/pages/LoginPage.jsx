@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import googlImg from '../assets/svgs/google.svg';
-import { api } from '../utils/customAxios';
 
 export default function Login() {
   const handleGoogleLogin = async () => {
-    // window.location.href =
-    //   'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/api/oauth2/authorization/google';
-    // https://accounts.google.com/o/oauth2/auth?client_id=113402694110-9kpqdal2ecqo4bu4h9emk3j08elp82p8.apps.googleusercontent.com&redirect_uri=http://localhost:5173/api/login/oauth2/code/google&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile
-    const res = await api.get('/oauth2/authorization/google');
-    console.log(res);
+    window.location.href =
+      'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/api/oauth2/authorization/google';
+
+    // const res = await api.get('/oauth2/authorization/google');
+    // console.log(res);
   };
 
   return (

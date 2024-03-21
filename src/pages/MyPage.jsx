@@ -48,7 +48,9 @@ const Wrapper = styled.div`
 
 const ProfileBox = styled.div`
   height: 187px;
-  background: #f0f0f0;
+  background: linear-gradient(180deg, #eef8ef 0%, #fdfdfd 100%);
+
+  /* background: #f0f0f0; */
   display: flex;
   flex-direction: column;
   align-items: center;
