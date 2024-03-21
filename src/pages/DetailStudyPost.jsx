@@ -16,16 +16,15 @@ const DetailStudyPost = () => {
         <PostItem
           key={post.id}
           title={post.title}
-          body={post.body}
-          profilePic={post.profilePic}
-          userName={post.userName}
-          headCountTags={post.headCountTags}
-          subjectTags={post.subjectTags}
-          chooseDateTags={post.chooseDateTags}
-          createdAt={post.createdAt}
-          members={post.members}
-          likes={post.likes}
-          comments={post.comments}
+          contents={post.contents}
+          picture={post.picture}
+          writer={post.writer}
+          recruitNum={post.recruitNum}
+          subject={post.subject}
+          frequency={post.frequency}
+          users={post.users}
+          heartNum={post.heartNum}
+          commentNum={post.commentNum}
         />
       </PostListBlock>
       <CommentList />
@@ -36,26 +35,26 @@ const DetailStudyPost = () => {
 
 const PostItem = ({
   title,
-  body,
-  profilePic,
-  userName,
-  headCountTags,
-  subjectTags,
-  chooseDateTags,
-  createdAt,
-  members,
-  likes,
-  comments,
+  contents,
+  writer,
+  recruitNum,
+  subject,
+  frequency,
+  nowNum,
+  users,
+  heartNum,
+  commentNum,
 }) => {
-  const displayMembers = members.slice(0, 5); // 최대 5명까지 프로필 사진을 표시
+  const displayMembers = users.slice(0, 5); // 최대 5명까지 프로필 사진을 표시
 
   const handleLikes = () => {
     console.log("좋아요!");
   };
+
   return (
     <PostItemBlock>
       <UserInfo>
-        <ProfilePic src={profilePic} alt="profile" />
+        <ProfilePic src={users[0]?.picture} alt="profile" />
         <div
           style={{
             display: "flex",
@@ -64,38 +63,29 @@ const PostItem = ({
             width: "100%",
           }}
         >
-          <UserName>{userName}</UserName>
-          <DateInfo>{createdAt}</DateInfo>
+          <UserName>{writer}</UserName>
         </div>
       </UserInfo>
       <h2>{title}</h2>
-      <p>{body}</p>
+      <p>{contents}</p>
       <TagList>
-        {headCountTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
-        {subjectTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
-        {chooseDateTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
+        <Tag>{recruitNum} 명</Tag>
+        <Tag>{subject}</Tag>
+        <Tag>{frequency}</Tag>
       </TagList>
       <MembersProfiles>
-        {displayMembers.map((member) => (
-          <ProfileImage key={member.id} src={member.profilePic} alt="profile" />
+        {displayMembers.map((user) => (
+          <ProfileImage key={user.id} src={user.picture} alt="profile" />
         ))}
-        {members.length < 5 ? <MoreMembers /> : null}
+        {nowNum.length > 5 ? <MoreMembers /> : null}
       </MembersProfiles>
       <PostStats>
         <LikesButton onClick={handleLikes}>
           <LikesIcon />
-          <StatsItem>{likes}</StatsItem>
         </LikesButton>
-        <CommentsStats>
-          <CommentsIcon />
-          <StatsItem>{comments}</StatsItem>
-        </CommentsStats>
+        <StatsItem>{heartNum}</StatsItem>
+        <CommentsIcon />
+        <StatsItem>{commentNum}</StatsItem>
       </PostStats>
     </PostItemBlock>
   );
@@ -179,6 +169,7 @@ const Tag = styled.div`
   color: black;
 `;
 
+/*
 const DateInfo = styled.span`
   color: #6e6e6e;
   font-family: Inter;
@@ -188,7 +179,7 @@ const DateInfo = styled.span`
   line-height: normal;
   width: 70px;
 `;
-
+*/
 const MembersProfiles = styled.div`
   display: flex;
   align-items: center;
@@ -247,14 +238,6 @@ const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
   width: 8px;
   height: 8px;
   color: #b3b3b3;
-`;
-const CommentsStats = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: #666;
-  margin-top: 50px;
-  gap: 5px;
 `;
 
 export default DetailStudyPost;
