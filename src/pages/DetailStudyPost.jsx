@@ -1,34 +1,91 @@
-import { useLocation } from "react-router-dom";
+//import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import AddIcon from "@mui/icons-material/Add";
+import SendIcon from "@mui/icons-material/Send";
 import CommentList from "../components/Write/CommentList";
-import PostCommit from "../components/Write/PostCommit";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { api } from "../utils/customAxios";
 
 const DetailStudyPost = () => {
-  const location = useLocation();
-  const { post } = location.state; // 전달받은 post 데이터
+  const { postId } = useParams();
+  console.log(postId);
+
+  const [postData, setPostData] = useState([]); // 스터디 포스트를 저장할 상태
+  const [title, setTitle] = useState("");
+
+  const getDetailStudy = async () => {
+    const response = await api.get(`/api/study/${postId}`);
+    console.log(response);
+    setPostData(response.data);
+  };
+  /*
+  const getStudyPostComment = async () => {
+    const res = await api.get(`/api/study/${postId}`);
+    console.log(res);
+    setTitle(res.data);
+  };*/
+
+  useEffect(() => {
+    getDetailStudy();
+  }, []);
+
+  if (!postData) {
+    return null;
+  }
+
+  const handleInputCommit = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleCommentSubmit = () => {
+    const commentData = {
+      contents: title, // 사용자가 입력한 동적인 값
+    };
+
+    api
+      .post("/user/study/${postData.id}/talk/write", commentData)
+      .then((response) => {
+        console.log("댓글이 성공적으로 전송되었습니다.", response.data);
+        // 성공 후 처리 로직
+      })
+      .catch((error) => {
+        console.error("댓글 전송에 실패했습니다.", error);
+        // 실패 시 처리 로직
+      });
+  };
 
   return (
     <>
-      <PostListBlock>
+      <PostBlock>
         <PostItem
-          key={post.id}
-          title={post.title}
-          contents={post.contents}
-          picture={post.picture}
-          writer={post.writer}
-          recruitNum={post.recruitNum}
-          subject={post.subject}
-          frequency={post.frequency}
-          users={post.users}
-          heartNum={post.heartNum}
-          commentNum={post.commentNum}
+          key={postId}
+          title={postData.title}
+          contents={postData.contents}
+          writer={postData.writer}
+          recruitNum={postData.recruitNum}
+          subject={postData.subject}
+          frequency={postData.frequency}
+          nowNum={postData.nowNum}
+          users={postData.users}
+          heartNum={postData.heartNum}
+          commentNum={postData.commentNum}
         />
-      </PostListBlock>
+      </PostBlock>
       <CommentList />
-      <PostCommit />
+      <CommentContainer>
+        <InputContainer>
+          <TitleInput
+            placeholder="댓글을 입력해주세요."
+            onChange={handleInputCommit}
+          />
+          <CommitButton onClick={handleCommentSubmit}>
+            <StyledCommitIcon />
+          </CommitButton>
+        </InputContainer>
+      </CommentContainer>
     </>
   );
 };
@@ -45,8 +102,6 @@ const PostItem = ({
   heartNum,
   commentNum,
 }) => {
-  const displayMembers = users.slice(0, 5); // 최대 5명까지 프로필 사진을 표시
-
   const handleLikes = () => {
     console.log("좋아요!");
   };
@@ -54,7 +109,7 @@ const PostItem = ({
   return (
     <PostItemBlock>
       <UserInfo>
-        <ProfilePic src={users[0]?.picture} alt="profile" />
+        <ProfilePic alt="profile" />
         <div
           style={{
             display: "flex",
@@ -74,10 +129,11 @@ const PostItem = ({
         <Tag>{frequency}</Tag>
       </TagList>
       <MembersProfiles>
-        {displayMembers.map((user) => (
-          <ProfileImage key={user.id} src={user.picture} alt="profile" />
-        ))}
-        {nowNum.length > 5 ? <MoreMembers /> : null}
+        {users &&
+          users.map((user) => (
+            <ProfileImage key={user.id} src={user.picture} alt="profile" />
+          ))}
+        {nowNum < 5 ? <MoreMembers /> : null}
       </MembersProfiles>
       <PostStats>
         <LikesButton onClick={handleLikes}>
@@ -91,39 +147,22 @@ const PostItem = ({
   );
 };
 
-const PostListBlock = styled.div`
+const PostBlock = styled.div`
   display: flex;
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: center;
   border-bottom: 1px solid #d9d9d9;
   width: 100%;
   height: 260px;
-  margin-top: 30px;
   font-size: 12px;
   flex-direction: column;
 `;
 
 const PostItemBlock = styled.div`
-  display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 3rem;
-  &:first-child {
-    padding-top: 0;
-  }
-  h2 {
-    color: #000;
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-  }
-  p {
-    color: #000;
-    font-family: Inter;
-    font-size: 14px;
-    font-style: normal;
-    line-height: normal;
+  padding: 2rem;
+  & + & {
+    border-top: 3px solid #d9d9d9;
   }
 `;
 
@@ -204,17 +243,15 @@ const MoreMembers = styled(AddIcon)`
 
 const PostStats = styled.div`
   display: flex;
-  width: 100%;
-  justify-content: right;
-  font-size: 13px;
+  justify-content: flex-end;
+  font-size: 12px;
   color: #666;
   margin-top: 13px;
-  gap: 5px;
 `;
 
 const StatsItem = styled.span`
-  margin-left: 3px; // 아이템 사이의 간격 조절
-  margin-right: 3px; // 아이템 사이의 간격 조절
+  margin-left: 10px; // 아이템 사이의 간격 조절
+  margin-right: 30px; // 아이템 사이의 간격 조절
   display: flex;
   align-items: center;
 `;
@@ -230,7 +267,6 @@ const LikesButton = styled.button`
   align-items: center;
   font-size: 12px;
   color: #666;
-  margin-top: 50px;
   gap: 5px;
 `;
 
@@ -238,6 +274,52 @@ const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
   width: 8px;
   height: 8px;
   color: #b3b3b3;
+`;
+
+const CommentContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+`;
+const InputContainer = styled.div`
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: fixed;
+  bottom: 20px;
+  z-index: 1000;
+`;
+
+const TitleInput = styled.input`
+  display: flex;
+  width: 100%;
+  height: 40px;
+  padding-left: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--light-gray-gray-300, #e1e1e8);
+  background: var(--light-gray-gray-000, #fff);
+`;
+
+const StyledCommitIcon = styled(SendIcon)`
+  position: absolute;
+  margin-left: 21rem;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  color: #359c3a;
+`;
+
+const CommitButton = styled.div`
+  display: flex;
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  justify-content: space-between;
 `;
 
 export default DetailStudyPost;

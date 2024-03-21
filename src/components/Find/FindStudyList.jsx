@@ -141,7 +141,7 @@ const IsCompletedBlock = styled.div`
 
   flex-shrink: 0;
   border-radius: 8px;
-  background: #aaaaaa;
+  background: #666666;
 `;
 
 // completed 확인해야함
@@ -164,12 +164,12 @@ const PostItem = ({
     <PostItemBlock
       onClick={onClick}
       style={{
-        backgroundColor: completed ? "#EEEEEE" : "none",
+        backgroundColor: completed ? "#aaaaaa" : "none",
       }}
     >
       {completed && <IsCompletedBlock>모집완료</IsCompletedBlock>}
       <UserInfo>
-        <ProfilePic src={users[0]?.picture} alt="profile" />
+        <ProfilePic alt="profile" />
         <div
           style={{
             display: "flex",
@@ -192,7 +192,7 @@ const PostItem = ({
         {displayMembers.map((user) => (
           <ProfileImage key={user.id} src={user.picture} alt="profile" />
         ))}
-        {nowNum.length > 5 ? <MoreMembers /> : null}
+        {nowNum < 5 ? <MoreMembers /> : null}
       </MembersProfiles>
       <PostStats>
         <LikesIcon />
@@ -208,8 +208,8 @@ const FindStudyList = () => {
   const navigate = useNavigate();
 
   // 콜백 함수
-  const handlePostClick = (post) => {
-    navigate(`/find-study/postDetail/${post.id}`, { state: { post } }); // postDetail 페이지로 이동하면서 state에 post 데이터 전달
+  const handlePostClick = (postId) => {
+    navigate(`/find-study/postDetail/${postId}`);
   };
 
   const [posts, setPosts] = useState([]); // 스터디 포스트를 저장할 상태
@@ -237,8 +237,7 @@ const FindStudyList = () => {
         {posts.map((post) => (
           <PostItem
             key={post.id}
-            {...post} // 간결하게 데이터 전달
-            onClick={() => handlePostClick(post)} // onClick 이벤트 추가
+            onClick={() => handlePostClick(post.id)} // onClick 이벤트 추가
             title={post.title}
             contents={post.contents}
             picture={post.picture}
