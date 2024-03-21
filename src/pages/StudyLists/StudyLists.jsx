@@ -1,9 +1,5 @@
-import { useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Box } from '@mui/material';
 import styled from 'styled-components';
-import searchIcon from '../assets/svgs/searchIcon.svg';
+import searchIcon from '../../assets/svgs/searchIcon.svg';
 import { useNavigate } from 'react-router-dom';
 
 const studyLists = [
@@ -40,34 +36,19 @@ const studyLists = [
 ];
 
 export default function StudyLists() {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   const navigate = useNavigate();
 
   return (
     <>
-      <Box
-        sx={{
-          width: '100%',
-          marginTop: '10px',
-        }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          centered
-          // indicatorColor="inherit"
-          textColor="inherit"
-        >
-          <Tab label="팀 리스트" sx={{ color: 'black' }} />
-          <Tab label="" sx={{ color: 'black' }} disabled />
-          <Tab label="멘토링 자료방" sx={{ color: 'black' }} />
-        </Tabs>
-      </Box>
+      <ListWrapper>
+        <ListBox style={{ borderBottom: '2px solid black' }}>
+          <ListSpan style={{ color: 'black' }}>팀 리스트</ListSpan>
+        </ListBox>
+
+        <ListBox onClick={() => navigate('/mento-lists')}>
+          <ListSpan>멘토링 리스트</ListSpan>
+        </ListBox>
+      </ListWrapper>
       <ContentWrapper>
         <SearchBox>
           <SearchImgBox>
@@ -100,6 +81,34 @@ export default function StudyLists() {
     </>
   );
 }
+
+const ListWrapper = styled.div`
+  padding-left: 22px;
+  padding-right: 22px;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+const ListBox = styled.div`
+  width: 80px;
+  height: 20px;
+  color: #6d6d6d;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 13px;
+`;
+
+const ListSpan = styled.span`
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -135,7 +144,7 @@ const SearchInput = styled.input`
 const TeamWrapper = styled.div`
   margin-top: 22px;
   width: 100%;
-  height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
