@@ -3,7 +3,7 @@ import Layout from '../components/Layout/Layout';
 import Home from '../pages/Home';
 import FindStudy from '../pages/FindStudy';
 import FindMentoti from '../pages/FindMentoti';
-import StudyLists from '../pages/StudyLists';
+import StudyLists from '../pages/StudyLists/StudyLists';
 import LoginPage from '../pages/LoginPage';
 import MyPageLayout from '../components/Layout/MyPageLayout';
 import MyPage from '../pages/MyPage';
@@ -16,6 +16,8 @@ import DetailStudyPost from '../pages/DetailStudyPost';
 import Header from '../components/Layout/Header';
 import StudyCompletedPage from '../pages/StudyCompletedPage';
 import StudyCompletedUpload from '../pages/StudyCompletedUpload';
+import MentoLists from '../pages/StudyLists/MentoLists';
+import TeamEvalutation from '../pages/StudyLists/TeamEvaluation';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,7 @@ const router = createBrowserRouter([
         path: '',
         element: <Home />,
       },
+
       {
         path: '/find-study',
         element: <FindStudy />,
@@ -43,12 +46,20 @@ const router = createBrowserRouter([
         element: <StudyLists />,
       },
       {
+        path: '/mento-lists',
+        element: <MentoLists />,
+      },
+      {
         path: '/study-lists/:studyId',
         element: <StudyCompletedPage />,
       },
       {
         path: '/study-lists/:studyId/post',
         element: <StudyCompletedUpload />,
+      },
+      {
+        path: '/study-lists/:studyId/:memberId/evaluate',
+        element: <TeamEvalutation />,
       },
       {
         path: '/login',
@@ -66,6 +77,11 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/api/login/oauth2/code/google',
+    element: <div>1</div>,
+  },
+
   {
     path: '/',
     element: <Header />,

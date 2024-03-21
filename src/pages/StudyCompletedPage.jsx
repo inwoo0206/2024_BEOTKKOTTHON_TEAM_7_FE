@@ -22,7 +22,9 @@ export default function StudyCompletedPage() {
           <CreateIcon />
         </PostBox>
         <ImgWrapper>
-          <Img />
+          <Img
+            onClick={() => navigate(`/study-lists/${studyId}/${1}/evaluate`)}
+          />
           <Img />
           <Img />
           <Img />
