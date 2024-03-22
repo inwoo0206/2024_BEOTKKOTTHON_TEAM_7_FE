@@ -51,7 +51,7 @@ export default function BottomNavBar() {
       <BottomIconBox
         value="study-lists"
         onClick={() => handleClick('study-lists')}
-        active={active === 'study-lists'}
+        active={active.startsWith('study-lists')}
       >
         <FactCheckIcon fontSize="medium" />
         <BottomIconTitle>스터디 리스트</BottomIconTitle>
