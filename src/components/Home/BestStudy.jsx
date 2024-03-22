@@ -3,23 +3,24 @@ import styled from 'styled-components';
 import BestStudyBox from './BestStudyBox';
 import { useHome } from '../../hooks/useHome';
 
-const data = [
-  { id: 1, title: '으쌰으쌰' },
-  { id: 2, title: '스터디메이드' },
-  { id: 3, title: '자바스프링' },
-];
-
 export default function BestStudy() {
-  // const dat = useHome();
+  const data = useHome();
+  console.log(data);
 
   return (
     <Wrapper>
       <Title>우수 스터디</Title>
 
       <StudyBox>
-        {data.map((item) => (
-          <BestStudyBox key={item.id} title={item.title} id={item.id} />
-        ))}
+        {data &&
+          data.data.map((item, i) => (
+            <BestStudyBox
+              key={item.id}
+              title={item.title}
+              id={item.id}
+              rating={i}
+            />
+          ))}
       </StudyBox>
     </Wrapper>
   );
