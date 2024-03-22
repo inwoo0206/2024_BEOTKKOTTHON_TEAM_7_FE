@@ -12,31 +12,55 @@ export default function Login() {
 
   return (
     <LoginWrapper>
-      <LoginTitle>
-        <span>로그인</span> 후에
-      </LoginTitle>
-      <LoginTitle>이용가능한 서비스입니다!</LoginTitle>
+      <SpanWrapper>
+        <LoginTitle>내 손안의</LoginTitle>
+        <LoginTitle>
+          공부메이트, <span>STUDY MATE</span>
+        </LoginTitle>
+      </SpanWrapper>
       <GoogleButtonWrapper onClick={handleGoogleLogin}>
         <GoogleButton src={googlImg} />
-        <GoogleSpan>구글로 시작하기</GoogleSpan>
+        <GoogleSpan>구글로 3초만에 시작하기</GoogleSpan>
       </GoogleButtonWrapper>
     </LoginWrapper>
   );
 }
+
+const SpanWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  position: absolute;
+  top: 144px;
+  left: 32px;
+`;
 
 const LoginWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 70dvh;
+  height: 100dvh;
+  background: linear-gradient(
+    156deg,
+    #eef7ee 6.34%,
+    #fafafa 42.49%,
+    #eef8ef 78.26%
+  );
 `;
 
 const LoginTitle = styled.span`
-  &:first-child {
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 500;
+  &:last-child {
     span {
-      color: #01b99f;
-      font-weight: 700;
+      color: #39af37;
+      font-family: Inter;
+      font-size: 23px;
+      font-style: normal;
+      font-weight: 900;
     }
   }
   font-size: 20px;
@@ -45,12 +69,16 @@ const LoginTitle = styled.span`
 const GoogleButtonWrapper = styled.button`
   position: absolute;
   bottom: 15%;
-  padding: 10px 100px;
+  padding: 10px 80px;
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+
+  border-radius: 4px;
+  background: var(--light-white-white-light, #fff);
+  /* Light/Box-shadow/$box-shadow-sm */
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2);
 `;
 const GoogleButton = styled.img``;
 const GoogleSpan = styled.span``;

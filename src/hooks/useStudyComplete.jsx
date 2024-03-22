@@ -3,7 +3,6 @@ import { api } from '../utils/customAxios';
 
 const getCompletedStudy = async () => {
   const res = await api.get('/study/complete');
-  console.log(res);
   return res;
 };
 

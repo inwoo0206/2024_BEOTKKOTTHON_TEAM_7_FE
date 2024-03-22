@@ -3,34 +3,26 @@ import { useForm } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate, useParams } from 'react-router-dom';
-import { api } from '../utils/customAxios';
+import { api } from '../../utils/customAxios';
 
-export default function StudyCompletedUpload() {
-  const { studyId } = useParams();
+export default function MentoringCompletedUpload() {
+  const { mentoringId } = useParams();
+  console.log(mentoringId);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   const submitHandler = async (data) => {
     const formData = new FormData();
-    formData.append('image', data.photoURL[0]);
+
     formData.append(
       JSON.stringify({
         title: data.week,
         content: data.content,
       }),
     );
-    const config = {
-      headers: {
-        // Authorization: ...,  // 토큰 넣어주기
-        'Content-Type': 'multipart/form-data', // 데이터 형식 지정
-      },
-    };
+
     try {
-      const res = await api.post(
-        `/user/study/${studyId}/afterstudy/write`,
-        formData,
-        config,
-      );
+      const res = await api.post(`/`, formData);
       console.log(res);
       navigate(-1);
     } catch (error) {
@@ -40,7 +32,7 @@ export default function StudyCompletedUpload() {
   return (
     <Wrapper>
       <TitleWrapper>
-        <StudyTitle>A팀</StudyTitle>
+        <StudyTitle>멘토링팀</StudyTitle>
       </TitleWrapper>
       <ContentWrapper>
         <ContentTitle>업로드 하려는 주 차</ContentTitle>

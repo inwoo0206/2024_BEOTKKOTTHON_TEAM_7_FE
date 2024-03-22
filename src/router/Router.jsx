@@ -14,10 +14,12 @@ import MentorList from '../pages/MentorList';
 import DetailMentotiPost from '../pages/DetailMentotiPost';
 import DetailStudyPost from '../pages/DetailStudyPost';
 import Header from '../components/Layout/Header';
-import StudyCompletedPage from '../pages/StudyCompletedPage';
-import StudyCompletedUpload from '../pages/StudyCompletedUpload';
-import MentoLists from '../pages/StudyLists/MentoLists';
+import StudyCompletedPage from '../pages/StudyLists/StudyCompletedPage';
+import StudyCompletedUpload from '../pages/StudyLists/StudyCompletedUpload';
+import MentoLists from '../pages/MentoringList/MentoLists';
 import TeamEvalutation from '../pages/StudyLists/TeamEvaluation';
+import MentoringCompletedPage from '../pages/MentoringList/MentoringCompletedPage';
+import MentoringCompletedUpload from '../pages/MentoringList/MentoringCompletedUpload';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
       {
         path: '/mento-lists',
         element: <MentoLists />,
+      },
+      {
+        path: '/mento-lists/:mentoringId',
+        element: <MentoringCompletedPage />,
+      },
+      {
+        path: '/mento-lists/:mentoringId/post',
+        element: <MentoringCompletedUpload />,
       },
       {
         path: '/study-lists/:studyId',
