@@ -1,13 +1,15 @@
 import { api } from '../../utils/customAxios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useHome } from '../../hooks/useHome';
 
 export default function PopularStudy() {
   const navigate = useNavigate();
 
+  const { popular } = useHome();
+  console.log(popular);
+
   const test = async () => {
-    // const res = await api.get('/test');
-    // console.log(res);
     const res = await api.get('/test');
     console.log(res);
   };
