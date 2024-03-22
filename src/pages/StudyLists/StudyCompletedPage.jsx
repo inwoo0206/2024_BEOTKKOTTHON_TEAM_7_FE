@@ -7,69 +7,77 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CreateIcon from '@mui/icons-material/Create';
+import { useStudy } from '../../hooks/useStudy1';
 
 export default function StudyCompletedPage() {
   const { studyId } = useParams();
   console.log(studyId);
   const navigate = useNavigate();
+  const data = useStudy(studyId);
+  console.log(data);
   return (
     <Wrapper>
       <TitleWrapper>
-        <StudyTitle>A팀</StudyTitle>
+        <StudyTitle>{data && data.data.teamName}</StudyTitle>
       </TitleWrapper>
       <ContentWrapper>
         <PostBox onClick={() => navigate(`/study-lists/${studyId}/post`)}>
           <CreateIcon />
         </PostBox>
         <ImgWrapper>
-          <Img
-            onClick={() => navigate(`/study-lists/${studyId}/${1}/evaluate`)}
-          />
-          <Img />
-          <Img />
-          <Img />
+          {data &&
+            data.data.users.map((item) => {
+              return (
+                <Img
+                  key={item.id}
+                  src={item.picture}
+                  onClick={() =>
+                    navigate(`/study-lists/${studyId}/${item.id}/evaluate`, {
+                      state: { name: item.name },
+                    })
+                  }
+                />
+              );
+            })}
         </ImgWrapper>
         <StudyBoxWrapper>
-          <Accordion sx={{ marginBottom: '15px', borderRadius: '4px' }}>
-            <AccordionSummary
-              expandIcon={<ArrowDownwardIcon fontSize="small" />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography
-                sx={{ color: '#6D6D6D', fontSize: '14px', margin: '8px 0' }}
-              >
-                Accordion 1
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography sx={{ fontSize: '12px' }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit.sadfaasdfsd Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion sx={{ marginBottom: '15px', borderRadius: '4px' }}>
-            <AccordionSummary
-              expandIcon={<ArrowDownwardIcon fontSize="small" />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography
-                sx={{ color: '#6D6D6D', fontSize: '14px', margin: '8px 0' }}
-              >
-                Accordion 1
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography sx={{ fontSize: '12px' }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit.sadfaasdfsd Suspendisse malesuada lacus ex, sit amet
-                blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
+          {data &&
+            data.data.dones.map((item) => {
+              return (
+                <Accordion
+                  sx={{
+                    marginBottom: '15px',
+                    borderRadius: '4px',
+                    width: '100%',
+                  }}
+                  key={item.id}
+                >
+                  <AccordionSummary
+                    expandIcon={<ArrowDownwardIcon fontSize="small" />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography
+                      sx={{
+                        color: '#6D6D6D',
+                        fontSize: '14px',
+                        margin: '8px 0',
+                      }}
+                    >
+                      {`${item.week}주차 스터디`}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography sx={{ fontSize: '12px' }}>
+                      {item.contents}
+                    </Typography>
+                    {item.imageUrls.length > 0 && (
+                      <img src={item.imageUrls[0]} style={{ width: '100%' }} />
+                    )}
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })}
         </StudyBoxWrapper>
       </ContentWrapper>
     </Wrapper>
@@ -115,6 +123,7 @@ const Img = styled.img`
   margin-right: 17px;
   height: 42px;
   width: 42px;
+  border-radius: 50%;
 `;
 const StudyBoxWrapper = styled.div`
   display: flex;

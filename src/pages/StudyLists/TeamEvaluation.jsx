@@ -3,12 +3,14 @@ import good from '../../assets/svgs/good.svg';
 import bad from '../../assets/svgs/bad.svg';
 import best from '../../assets/svgs/best.svg';
 import { Rating } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { api } from '../../utils/customAxios';
 
 export default function TeamEvalutation() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+
   const [selectedSticker, setSelectedSticker] = useState(null);
 
   const [rating, setRating] = useState(5);
@@ -32,7 +34,7 @@ export default function TeamEvalutation() {
     <Wrapper>
       <E></E>
       <ContentWrapper>
-        <Title>민준님과 스터디는 어떠셨나요?</Title>
+        <Title>{`${state.name}님과 스터디는 어떠셨나요?`}</Title>
         <Subtitle>거래 선호도는 나만 볼 수 있어요.</Subtitle>
         <StickerWrapper>
           <StickerBox

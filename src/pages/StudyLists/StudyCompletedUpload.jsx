@@ -12,13 +12,16 @@ export default function StudyCompletedUpload() {
 
   const submitHandler = async (data) => {
     const formData = new FormData();
-    formData.append('image', data.photoURL[0]);
-    formData.append(
-      JSON.stringify({
-        title: data.week,
-        content: data.content,
-      }),
-    );
+    formData.append('file', data.photoURL[0]);
+    formData.append('week', data.week);
+    formData.append('contents', data.content);
+    // formData.append(
+    //   'data',
+    //   JSON.stringify({
+    //     title: data.week,
+    //     content: data.content,
+    //   }),
+    // );
     const config = {
       headers: {
         // Authorization: ...,  // 토큰 넣어주기

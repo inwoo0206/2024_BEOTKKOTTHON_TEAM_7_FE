@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import BestStudyBox from './BestStudyBox';
+import { useHome } from '../../hooks/useHome';
 
 const data = [
   { id: 1, title: '으쌰으쌰' },
@@ -9,6 +10,8 @@ const data = [
 ];
 
 export default function BestStudy() {
+  // const dat = useHome();
+
   return (
     <Wrapper>
       <Title>우수 스터디</Title>
