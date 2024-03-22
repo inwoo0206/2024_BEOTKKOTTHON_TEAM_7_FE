@@ -3,27 +3,24 @@ import AddIcon from "@mui/icons-material/Add";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { listStudyPosts } from "../../utils/studies";
 
 const PostListBlock = styled.div`
-  display: flex;
   justify-content: center; /* 가운데 정렬 */
   align-items: center;
   width: 100%;
   padding-top: 20px; /* 상단 여백 */
   margin-bottom: 20px;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0;
   flex-direction: column;
 `;
 
 const PostItemBlock = styled.div`
-  display: flex;
   flex-direction: column;
   width: 100%;
   padding: 3rem;
-  &:first-child {
-    padding-top: 0;
-  }
   & + & {
     border-top: 3px solid #d9d9d9;
   }
@@ -36,14 +33,15 @@ const UserInfo = styled.div`
 `;
 
 const ProfilePic = styled.img`
-  width: 40px; // 프로필 사진의 크기를 지정합니다.
-  height: 40px; // 프로필 사진의 크기를 지정합니다.
+  width: 35px; // 프로필 사진의 크기를 지정합니다.
+  height: 35px; // 프로필 사진의 크기를 지정합니다.
   border-radius: 50%; // 원형으로 프로필 사진을 표시합니다.
   margin-right: 1rem; // 이름과의 간격을 지정합니다.
 `;
 
 const UserName = styled.span`
   font-weight: bold;
+  font-size: 15px;
 `;
 
 const TagList = styled.div`
@@ -57,7 +55,7 @@ const Tag = styled.div`
   background: #dff0e0;
   height: 19px;
   flex-shrink: 0;
-  font-size: 9px;
+  font-size: 11px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,6 +63,7 @@ const Tag = styled.div`
   color: black;
 `;
 
+/*
 const DateInfo = styled.span`
   color: #6e6e6e;
   font-family: Inter;
@@ -74,6 +73,7 @@ const DateInfo = styled.span`
   line-height: normal;
   width: 52px;
 `;
+*/
 
 const MembersProfiles = styled.div`
   display: flex;
@@ -124,25 +124,52 @@ const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
   color: #b3b3b3;
 `;
 
+const IsCompletedBlock = styled.div`
+  position: absolute;
+  padding: 9px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-left: 15rem;
+
+  color: #fff;
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Inter;
+  font-size: 8px;
+  font-style: normal;
+
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #666666;
+`;
+
+// completed 확인해야함
 const PostItem = ({
   title,
-  body,
-  profilePic,
-  userName,
-  headCountTags,
-  subjectTags,
-  chooseDateTags,
-  createdAt,
-  members,
-  likes,
-  comments,
+  contents,
+  writer,
+  recruitNum,
+  subject,
+  frequency,
+  nowNum,
+  users,
+  heartNum,
+  commentNum,
+  completed,
   onClick,
 }) => {
-  const displayMembers = members.slice(0, 5); // 최대 5명까지 프로필 사진을 표시
+  const displayMembers = users.slice(0, 5); // 최대 5명까지 프로필 사진을 표시
   return (
-    <PostItemBlock onClick={onClick}>
+    <PostItemBlock
+      onClick={onClick}
+      style={{
+        backgroundColor: completed ? "#aaaaaa" : "none",
+      }}
+    >
+      {completed && <IsCompletedBlock>모집완료</IsCompletedBlock>}
       <UserInfo>
-        <ProfilePic src={profilePic} alt="profile" />
+        <ProfilePic alt="profile" />
         <div
           style={{
             display: "flex",
@@ -151,34 +178,27 @@ const PostItem = ({
             width: "100%",
           }}
         >
-          <UserName>{userName}</UserName>
-          <DateInfo>{createdAt}</DateInfo>
+          <UserName>{writer}</UserName>
         </div>
       </UserInfo>
       <h2>{title}</h2>
-      <p>{body}</p>
+      <p>{contents}</p>
       <TagList>
-        {headCountTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
-        {subjectTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
-        {chooseDateTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
+        <Tag>{recruitNum} 명</Tag>
+        <Tag>{subject}</Tag>
+        <Tag>{frequency}</Tag>
       </TagList>
       <MembersProfiles>
-        {displayMembers.map((member) => (
-          <ProfileImage key={member.id} src={member.profilePic} alt="profile" />
+        {displayMembers.map((user) => (
+          <ProfileImage key={user.id} src={user.picture} alt="profile" />
         ))}
-        {members.length < 5 ? <MoreMembers /> : null}
+        {nowNum < 5 ? <MoreMembers /> : null}
       </MembersProfiles>
       <PostStats>
         <LikesIcon />
-        <StatsItem>{likes}</StatsItem>
+        <StatsItem>{heartNum}</StatsItem>
         <CommentsIcon />
-        <StatsItem>{comments}</StatsItem>
+        <StatsItem>{commentNum}</StatsItem>
       </PostStats>
     </PostItemBlock>
   );
@@ -188,62 +208,28 @@ const FindStudyList = () => {
   const navigate = useNavigate();
 
   // 콜백 함수
-  const handlePostClick = (post) => {
-    navigate(`/find-study/postDetail/${post.id}`, { state: { post } }); // postDetail 페이지로 이동하면서 state에 post 데이터 전달
+  const handlePostClick = (postId) => {
+    navigate(`/find-study/postDetail/${postId}`);
   };
 
-  const posts = [
-    {
-      id: 1,
-      title: "컴활 1급 한달 목표로 공부하실 분 구해요💕🥰",
-      body: "본문1",
-      profilePic: "/path/to/profile1.jpg",
-      userName: "사용자1",
-      headCountTags: ["5명"],
-      subjectTags: ["자격증"],
-      chooseDateTags: ["주 3일"],
-      createdAt: "03/13 18:28",
-      members: [
-        { id: 2, profilePic: "/path/to/profile2.jpg" },
-        { id: 3, profilePic: "/path/to/profile3.jpg" },
-      ],
-      likes: 8,
-      comments: 5,
-    },
-    {
-      id: 2,
-      title: "해커스 토익 같이 공부하실 분 구해요!! 초보자 환영~",
-      body: "본문2",
-      profilePic: "/path/to/profile2.jpg",
-      userName: "사용자2",
-      headCountTags: ["5명"],
-      subjectTags: ["어학"],
-      chooseDateTags: ["주 1일"],
-      createdAt: "03/13 18:28",
-      members: [
-        { id: 2, profilePic: "/path/to/profile2.jpg" },
-        { id: 3, profilePic: "/path/to/profile3.jpg" },
-      ],
-      likes: 8,
-      comments: 5,
-    },
-    {
-      id: 3,
-      title: "블렌더 방학 단기로 스터디 하실 분 연락주세요.",
-      body: "본문3",
-      profilePic: "/path/to/profile3.jpg",
-      userName: "사용자3",
-      headCountTags: ["5명"],
-      subjectTags: ["자격증"],
-      chooseDateTags: ["주 3일"],
-      members: [
-        { id: 2, profilePic: "/path/to/profile2.jpg" },
-        { id: 3, profilePic: "/path/to/profile3.jpg" },
-      ],
-      likes: 8,
-      comments: 5,
-    },
-  ];
+  const [posts, setPosts] = useState([]); // 스터디 포스트를 저장할 상태
+
+  useEffect(() => {
+    const fetchStudies = async () => {
+      try {
+        const data = await listStudyPosts(); // 비동기로 데이터를 불러옵니다.
+        setPosts(data); // 불러온 데이터를 상태에 저장합니다.
+      } catch (error) {
+        console.error("스터디 포스트를 불러오는 데 실패했습니다", error);
+      }
+    };
+
+    fetchStudies();
+  }, []);
+
+  if (!posts) {
+    return null;
+  }
 
   return (
     <>
@@ -251,19 +237,18 @@ const FindStudyList = () => {
         {posts.map((post) => (
           <PostItem
             key={post.id}
-            {...post} // 간결하게 데이터 전달
-            onClick={() => handlePostClick(post)} // onClick 이벤트 추가
+            onClick={() => handlePostClick(post.id)} // onClick 이벤트 추가
             title={post.title}
-            body={post.body}
-            profilePic={post.profilePic}
-            userName={post.userName}
-            headCountTags={post.headCountTags}
-            subjectTags={post.subjectTags}
-            chooseDateTags={post.chooseDateTags}
-            createdAt={post.createdAt}
-            members={post.members}
-            likes={post.likes}
-            comments={post.comments}
+            contents={post.contents}
+            picture={post.picture}
+            writer={post.writer}
+            recruitNum={post.recruitNum}
+            subject={post.subject}
+            frequency={post.frequency}
+            users={post.users}
+            heartNum={post.heartNum}
+            commentNum={post.commentNum}
+            completed={post.completed}
           />
         ))}
       </PostListBlock>

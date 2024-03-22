@@ -1,17 +1,15 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Quill from "quill";
 import "quill/dist/quill.bubble.css";
 import styled from "styled-components";
+import { useForm } from "react-hook-form";
 
 const TitleInput = styled.input`
-  display: block; /* flex 대신 block 사용 */
-  width: 350px; /* 길이 조정 */
+  display: block;
+  width: 350px;
   height: 40px;
   padding: 9px 16px;
-  box-sizing: border-box; /* 패딩과 테두리 포함 너비 */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  box-sizing: border-box;
   border-radius: 8px;
   border: 1px solid var(--light-gray-gray-300, #e1e1e8);
   background: var(--light-gray-gray-000, #fff);
@@ -20,7 +18,7 @@ const TitleInput = styled.input`
 
 const QuillWrapper = styled.div`
   width: 100%;
-  margin: 0 auto; /* 중앙 정렬 */
+  margin: 0 auto;
   width: 350px;
   height: 280px;
   flex-shrink: 0;
@@ -41,8 +39,9 @@ const QuillWrapper = styled.div`
 `;
 
 const Editor = () => {
-  const quillElement = useRef(null); // Quill을 적용할 DivElement를 설정
-  const quillInstance = useRef(null); // Quill 인스턴스를 설정
+  const { register, setValue } = useForm();
+  const quillElement = useRef(null);
+  const quillInstance = useRef(null);
 
   useEffect(() => {
     quillInstance.current = new Quill(quillElement.current, {
@@ -57,15 +56,20 @@ const Editor = () => {
         ],
       },
     });
-  }, []);
+
+    // Quill 내용이 변경될 때마다 폼의 값 업데이트
+    quillInstance.current.on("text-change", () => {
+      setValue("content", quillInstance.current.root.innerHTML);
+    });
+  }, [setValue]);
 
   return (
-    <div>
-      <TitleInput placeholder="제목을 입력하세요" />
+    <form>
+      <TitleInput {...register("title")} placeholder="제목을 입력하세요" />
       <QuillWrapper>
         <div ref={quillElement} />
       </QuillWrapper>
-    </div>
+    </form>
   );
 };
 

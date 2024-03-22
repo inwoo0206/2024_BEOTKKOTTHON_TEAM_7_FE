@@ -1,10 +1,10 @@
-import styled from 'styled-components';
-import googlImg from '../assets/svgs/google.svg';
+import styled from "styled-components";
+import googlImg from "../assets/svgs/google.svg";
 
 export default function Login() {
   const handleGoogleLogin = async () => {
     window.location.href =
-      'http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/api/oauth2/authorization/google';
+      "http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/api/oauth2/authorization/google";
 
     // const res = await api.get('/oauth2/authorization/google');
     // console.log(res);
