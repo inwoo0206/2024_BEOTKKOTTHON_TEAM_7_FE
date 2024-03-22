@@ -9,14 +9,14 @@ import PersonIcon from '@mui/icons-material/Person';
 
 export default function BottomNavBar() {
   const navigate = useNavigate();
-  // const { pathname } = useLocation();
-  // // useEffect(() => {
-  // //   const URL = pathname.substring(0);
-  // //   console.log(URL);
-  // //   setActive(pathname);
-  // // }, [pathname]);
-  // console.log(pathname);
+  const location = useLocation();
   const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const currentPath = location.pathname.slice(1);
+
+    setActive(currentPath);
+  }, [location]);
 
   const handleClick = (value) => {
     navigate(`/${value}`);
