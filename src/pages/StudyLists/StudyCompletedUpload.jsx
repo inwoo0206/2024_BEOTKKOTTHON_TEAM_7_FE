@@ -1,18 +1,9 @@
-<<<<<<< HEAD:src/pages/StudyCompletedUpload.jsx
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../utils/customAxios";
-=======
-import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
-import { TextField } from '@mui/material';
-import LinkIcon from '@mui/icons-material/Link';
-import { useNavigate, useParams } from 'react-router-dom';
-import { api } from '../../utils/customAxios';
->>>>>>> ad70333571a6c4e940a4541f686ffc2867399cec:src/pages/StudyLists/StudyCompletedUpload.jsx
+import { api } from "../../utils/customAxios";
 
 export default function StudyCompletedUpload() {
   const { studyId } = useParams();
@@ -21,18 +12,9 @@ export default function StudyCompletedUpload() {
 
   const submitHandler = async (data) => {
     const formData = new FormData();
-<<<<<<< HEAD:src/pages/StudyCompletedUpload.jsx
-    formData.append("image", data.photoURL[0]);
-    formData.append(
-      JSON.stringify({
-        title: data.week,
-        content: data.content,
-      })
-    );
-=======
-    formData.append('file', data.photoURL[0]);
-    formData.append('week', data.week);
-    formData.append('contents', data.content);
+    formData.append("file", data.photoURL[0]);
+    formData.append("week", data.week);
+    formData.append("contents", data.content);
     // formData.append(
     //   'data',
     //   JSON.stringify({
@@ -40,7 +22,6 @@ export default function StudyCompletedUpload() {
     //     content: data.content,
     //   }),
     // );
->>>>>>> ad70333571a6c4e940a4541f686ffc2867399cec:src/pages/StudyLists/StudyCompletedUpload.jsx
     const config = {
       headers: {
         // Authorization: ...,  // 토큰 넣어주기
