@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -9,8 +9,14 @@ import PersonIcon from '@mui/icons-material/Person';
 
 export default function BottomNavBar() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const currentPath = location.pathname.slice(1);
+
+    setActive(currentPath);
+  }, [location]);
 
   const handleClick = (value) => {
     navigate(`/${value}`);
@@ -45,7 +51,7 @@ export default function BottomNavBar() {
       <BottomIconBox
         value="study-lists"
         onClick={() => handleClick('study-lists')}
-        active={active === 'study-lists'}
+        active={active.startsWith('study-lists')}
       >
         <FactCheckIcon fontSize="medium" />
         <BottomIconTitle>스터디 리스트</BottomIconTitle>

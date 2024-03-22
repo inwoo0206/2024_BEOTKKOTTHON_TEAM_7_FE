@@ -18,7 +18,7 @@ const CommentList = ({ postId }) => {
   const [comments, setComments] = useState([]);
 
   const getStudyComment = async () => {
-    const res = await api.get(`/api/study/${postId}/talk`);
+    const res = await api.get(`/study/${postId}/talk`);
     console.log(res);
     setComments(res.data);
   };

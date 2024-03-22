@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 
-export default function BestStudyBox({ title, id }) {
+export default function BestStudyBox({ title, rating }) {
   const gold = '🥇';
   const silver = '🥈';
   const bronze = '🥉';
   return (
     <Wrapper>
-      <MedalBox>{id === 1 ? gold : id === 2 ? silver : bronze}</MedalBox>
-      <StudyName>{title}</StudyName>
+      <MedalBox>
+        {rating === 0 ? gold : rating === 1 ? silver : bronze}
+      </MedalBox>
+
+      <StudyName title={title}>{title}</StudyName>
     </Wrapper>
   );
 }
@@ -29,15 +32,16 @@ const Wrapper = styled.div`
 const StudyName = styled.span`
   color: #4d4d4d;
   font-family: Inter;
-  font-size: 13px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  font-size: ${(props) => (props.title.length > 9 ? '9px' : '11px')};
 `;
 
 const MedalBox = styled.span`
   position: absolute;
-  top: 0;
-  left: 5px;
+  top: 0px;
+  left: 0px;
   font-size: 35px;
 `;

@@ -59,11 +59,11 @@ export default function MentoLists() {
         </SearchBox>
         <TeamWrapper>
           {studyLists.map((item) => {
-            const studyId = item.id;
+            const mentoringId = item.id;
             return (
               <StudyBox
                 key={item.id}
-                onClick={() => navigate(`/study-lists/${studyId}`)}
+                onClick={() => navigate(`/mento-lists/${mentoringId}`)}
               >
                 <StudyBoxContent>
                   <StudyTitle>{item.title}</StudyTitle>

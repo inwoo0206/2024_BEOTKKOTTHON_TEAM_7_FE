@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../../utils/customAxios';
+import { api } from '../utils/customAxios';
 
 const getStudy = async (study_id) => {
-  const res = await api.get(`/study/${study_id}`);
-  console.log(res);
+  const res = await api.get(`/study/${study_id}/afterstudy`);
+
   return res;
 };
 

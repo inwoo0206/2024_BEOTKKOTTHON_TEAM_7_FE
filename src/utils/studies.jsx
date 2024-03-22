@@ -1,7 +1,7 @@
 import { api } from "./customAxios";
 
 export const listStudyPosts = async () => {
-  const response = await api.get(`/api/study`);
+  const response = await api.get(`/study`);
   return response.data;
 };
 
@@ -13,7 +13,6 @@ export const listStudyPosts = async () => {
 "frequency":"두번" 
 */
 
-/*
 export const writeStudyPost = async ({
   title,
   contents,
@@ -21,7 +20,7 @@ export const writeStudyPost = async ({
   recruitNum,
   frequency,
 }) => {
-  await api.post("/api//user/study/write", {
+  await api.post("/user/study/write", {
     title,
     contents,
     subject,
@@ -29,6 +28,5 @@ export const writeStudyPost = async ({
     frequency,
   });
 };
-*/
 
 // export const writeStudyPostComment = () => {};

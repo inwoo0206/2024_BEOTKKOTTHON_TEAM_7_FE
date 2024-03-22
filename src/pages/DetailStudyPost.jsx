@@ -16,7 +16,7 @@ const DetailStudyPost = () => {
   // const [comments, setComments] = useState([]); // GET 한 스터디 포스트 댓글 저장해둘 상태
 
   const getDetailStudy = async () => {
-    const response = await api.get(`/api/study/${postId}`);
+    const response = await api.get(`/study/${postId}`);
     console.log(response);
     setPostData(response.data);
   };
@@ -49,7 +49,7 @@ const DetailStudyPost = () => {
     };
 
     api
-      .post(`/api/user/study/${postId}/talk/write`, commentData)
+      .post(`/user/study/${postId}/talk/write`, commentData)
       .then((response) => {
         console.log("댓글이 성공적으로 전송되었습니다.", response.data);
         // 성공 후 처리 로직

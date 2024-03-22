@@ -8,28 +8,46 @@ import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CreateIcon from '@mui/icons-material/Create';
 
-export default function StudyCompletedPage() {
-  const { studyId } = useParams();
-  console.log(studyId);
+export default function MentoringCompletedPage() {
+  const { mentoringId } = useParams();
+  console.log(mentoringId);
   const navigate = useNavigate();
   return (
     <Wrapper>
       <TitleWrapper>
-        <StudyTitle>A팀</StudyTitle>
+        <StudyTitle>멘토링팀</StudyTitle>
       </TitleWrapper>
       <ContentWrapper>
-        <PostBox onClick={() => navigate(`/study-lists/${studyId}/post`)}>
+        <PostBox onClick={() => navigate(`/mento-lists/${mentoringId}/post`)}>
           <CreateIcon />
         </PostBox>
         <ImgWrapper>
-          <Img
-            onClick={() => navigate(`/study-lists/${studyId}/${1}/evaluate`)}
-          />
+          <Img />
           <Img />
           <Img />
           <Img />
         </ImgWrapper>
         <StudyBoxWrapper>
+          <Accordion sx={{ marginBottom: '15px', borderRadius: '4px' }}>
+            <AccordionSummary
+              expandIcon={<ArrowDownwardIcon fontSize="small" />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography
+                sx={{ color: '#6D6D6D', fontSize: '14px', margin: '8px 0' }}
+              >
+                Accordion 1
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography sx={{ fontSize: '12px' }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing
+                elit.sadfaasdfsd Suspendisse malesuada lacus ex, sit amet
+                blandit leo lobortis eget.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
           <Accordion sx={{ marginBottom: '15px', borderRadius: '4px' }}>
             <AccordionSummary
               expandIcon={<ArrowDownwardIcon fontSize="small" />}
@@ -115,6 +133,7 @@ const Img = styled.img`
   margin-right: 17px;
   height: 42px;
   width: 42px;
+  border-radius: 50%;
 `;
 const StudyBoxWrapper = styled.div`
   display: flex;
