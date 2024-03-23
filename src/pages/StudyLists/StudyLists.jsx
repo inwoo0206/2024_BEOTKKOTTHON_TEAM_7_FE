@@ -1,15 +1,36 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import searchIcon from '../../assets/svgs/searchIcon.svg';
 import { useNavigate } from 'react-router-dom';
-import { useStudyComplete } from '../../hooks/useStudyComplete';
+import { getCompletedStudy } from '../../hooks/useStudyComplete';
+import { useQuery } from '@tanstack/react-query';
+// import { usePrefetchMentoring } from '../../hooks/useStudyComplete';
 
 export default function StudyLists() {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState('');
 
-  const data = useStudyComplete(search);
+  const { data } = useQuery({
+    queryKey: ['studyCompleted'],
+    queryFn: getCompletedStudy,
+  });
+  const [realData, setRealData] = useState(data?.data);
+
+  // usePrefetchMentoring();
+
+  useEffect(() => {
+    if (!data) return;
+
+    const filteredData = data.data.filter(
+      (study) =>
+        study.contents.includes(search) ||
+        study.subject.includes(search) ||
+        study.title.includes(search) ||
+        study.frequency.includes(search),
+    );
+    setRealData(filteredData);
+  }, [search, data]);
 
   return (
     <>
@@ -35,23 +56,24 @@ export default function StudyLists() {
           />
         </SearchBox>
         <TeamWrapper>
-          {data?.data.map((item) => {
-            const studyId = item.id;
-            return (
-              <StudyBox
-                key={item.id}
-                onClick={() => navigate(`/study-lists/${studyId}`)}
-              >
-                <StudyBoxContent>
-                  <StudyTitle>{item.title}</StudyTitle>
-                  <StudyTags>
-                    <Tag>{item.subject}</Tag>
-                    <Tag>{`주${item.frequency}`}</Tag>
-                  </StudyTags>
-                </StudyBoxContent>
-              </StudyBox>
-            );
-          })}
+          {realData &&
+            realData.map((item) => {
+              const studyId = item.id;
+              return (
+                <StudyBox
+                  key={item.id}
+                  onClick={() => navigate(`/study-lists/${studyId}`)}
+                >
+                  <StudyBoxContent>
+                    <StudyTitle>{item.title}</StudyTitle>
+                    <StudyTags>
+                      <Tag>{item.subject}</Tag>
+                      <Tag>{`주${item.frequency}`}</Tag>
+                    </StudyTags>
+                  </StudyBoxContent>
+                </StudyBox>
+              );
+            })}
         </TeamWrapper>
       </ContentWrapper>
     </>
