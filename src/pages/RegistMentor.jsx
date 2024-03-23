@@ -1,20 +1,43 @@
 import styled from "styled-components";
-import WriteActionButtons from "../components/Write/WriteActionButtons";
 import CropOriginalIcon from "@mui/icons-material/CropOriginal";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import test from "../assets/svgs/google.svg";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { TextField } from "@mui/material";
 
 export default function RegistMentor() {
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const onClick = () => {
-    navigate(-1);
-  };
 
+  const submitMentorHandler = async (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("subject", data.subject);
+    formData.append("score", data.score);
+    formData.append("source", data.source);
+    formData.append("file", data.photoURL[0]);
+
+    /*
+    try {
+      const res = await api.post(`/user/study/write`, formData);
+      console.log(res);
+      console.log(recruitStudyData);
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+*/
+  };
   return (
-    <Wrapper>
+    <>
       <ProfileContainer>
-        <StyledButton onClick={onClick}>
+        <StyledButton
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           <GoBackIcon />
         </StyledButton>
         <ProfleImg src={test} />
@@ -22,32 +45,55 @@ export default function RegistMentor() {
       <HorizontalContainer>
         <SubContainer>
           <StyledText>이름</StyledText>
-          <TextInput />
+          <TitleInput type="name" {...register("name")} />
         </SubContainer>
         <SubContainer>
           <StyledText>분야</StyledText>
-          <TextInput />
+          <TitleInput type="subject" {...register("subject")} />
         </SubContainer>
       </HorizontalContainer>
       <Container>
         <StyledText>학점 혹은 점수</StyledText>
-        <TextInput />
+        <TitleInput type="score" {...register("score")} />
         <StyledText>증빙자료</StyledText>
-        <SourceInput />
-        <StyledButton>
-          <UploadPicIcon />
-          이미지 업로드 하기
-        </StyledButton>
-        <WriteActionButtons />
+        <TextField
+          {...register("contents", { required: true })}
+          id="outlined-multiline-static"
+          multiline
+          rows={8}
+          placeholder="내용을 입력하세요"
+          sx={{
+            width: "100%",
+            fontSize: "10px",
+          }}
+        />
+        <UploadPicBox>
+          <CropOriginalIcon />
+          <UploadPicSpan
+            name="photoURL"
+            type="file"
+            placeholder="업로드 하기"
+            {...register("photoURL")}
+          />
+        </UploadPicBox>
+        <WriteActionButtonsBlock>
+          <Button
+            style={{ backgroundColor: "#DADADA" }}
+            onClick={() => navigate(-1)}
+          >
+            취소하기
+          </Button>
+          <Button
+            style={{ backgroundColor: "#359c3a" }}
+            onClick={handleSubmit(submitMentorHandler)}
+          >
+            등록하기
+          </Button>
+        </WriteActionButtonsBlock>
       </Container>
-    </Wrapper>
+    </>
   );
 }
-
-const Wrapper = styled.div`
-  height: 100%;
-  overflow: hidden;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -69,7 +115,7 @@ const HorizontalContainer = styled.div`
 
 const SubContainer = styled.div`
   flex-direction: column;
-  width: 180px;
+  width: 150px;
 `;
 
 const ProfileContainer = styled.div`
@@ -80,7 +126,7 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   align-items: center; /* 중앙 정렬 유지 */
   position: relative; /* 절대 위치 사용을 위해 추가 */
-  margin-bottom: 20px;
+  justify-content: center;
 `;
 const ProfleImg = styled.img`
   width: 90px;
@@ -100,40 +146,25 @@ const StyledText = styled.div`
   margin-bottom: 10px;
 `;
 
-const TextInput = styled.input`
-  display: flex;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  padding-right: 20px;
-  font-size: 16px; /* font-size 조정 */
-  width: 160px;
-  height: 39px;
-  flex-shrink: 0;
-
-  border: 1px solid #e1e1e8;
-
-  background: #fff;
-`;
-
-const SourceInput = styled.div`
-  display: flex;
-  border-radius: 8px;
-  margin-bottom: 14px;
-  padding-right: 20px;
-  width: 333px;
-  height: 163px;
-  flex-shrink: 0;
-
-  border: 1px solid #e1e1e8;
-
-  background: #fff;
-`;
-
-const UploadPicIcon = styled(CropOriginalIcon)`
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
+const UploadPicSpan = styled.input`
+  font-size: 10px;
   color: #919eb6;
+  font-weight: 400;
+  margin-left: 4px;
+`;
+
+const UploadPicBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #919eb6;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: 13px;
+  margin-top: 6px;
 `;
 
 const GoBackIcon = styled(ArrowBackIosNewIcon)`
@@ -159,4 +190,39 @@ const StyledButton = styled.button`
   font-style: normal;
   font-weight: 600;
   margin-bottom: 13px;
+`;
+
+const Button = styled.button`
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.25rem 1rem;
+  color: white;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  width: 150px;
+  height: 55px;
+  flex-shrink: 0;
+`;
+
+const WriteActionButtonsBlock = styled.div`
+  margin-top: 30px;
+  margin-bottom: 50px;
+  button + button {
+    margin-left: 2rem;
+  }
+`;
+
+const TitleInput = styled.input`
+  display: block;
+  width: 150px;
+  height: 40px;
+  padding: 9px 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid var(--light-gray-gray-300, #e1e1e8);
+  background: var(--light-gray-gray-000, #fff);
+  margin-bottom: 14px;
 `;

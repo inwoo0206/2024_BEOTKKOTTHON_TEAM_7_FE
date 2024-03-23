@@ -15,8 +15,6 @@ const DetailStudyPost = () => {
   const [title, setTitle] = useState("");
   const [isCommited, setIsCommited] = useState(false);
 
-  /*
-   */
   const getDetailStudy = async () => {
     const response = await api.get(`/study/${postId}`);
     console.log(response);
@@ -35,13 +33,18 @@ const DetailStudyPost = () => {
     setTitle(e.target.value);
   };
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = async () => {
     setIsCommited(true);
     const commentData = {
       contents: title, // 사용자가 입력한 동적인 값
     };
 
-    api
+    setPostData((prevData) => ({
+      ...prevData,
+      commentNum: prevData.commentNum + 1,
+    }));
+
+    await api
       .post(`/user/study/${postId}/talk/write`, commentData)
       .then((response) => {
         console.log("댓글이 성공적으로 전송되었습니다.", response.data);

@@ -15,6 +15,7 @@ export default function RecruitMentor() {
 
   const submitStudyHandler = async (data) => {
     const formData = new FormData();
+    formData.append("teamname", data.teamname);
     formData.append("title", data.title);
     formData.append("contents", data.contents);
 
@@ -58,6 +59,11 @@ export default function RecruitMentor() {
   return (
     <>
       <Container>
+        <TitleInput
+          type="teamname"
+          {...register("teamname")}
+          placeholder="팀명을 입력하세요"
+        />
         <TitleInput
           type="title"
           {...register("title")}
@@ -294,8 +300,8 @@ const Button = styled.button`
 
 const WriteActionButtonsBlock = styled.div`
   margin-top: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   button + button {
-    margin-left: 0.5rem;
+    margin-left: 2rem;
   }
 `;
