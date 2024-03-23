@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import AddIcon from "@mui/icons-material/Add";
 import SendIcon from "@mui/icons-material/Send";
-import CommentList from "../components/Write/CommentList";
+import StudyCommentList from "../components/Write/StudyCommentList";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../utils/customAxios";
@@ -13,37 +13,30 @@ const DetailStudyPost = () => {
 
   const [postData, setPostData] = useState([]); // GET 한 스터디 포스트를 저장할 상태
   const [title, setTitle] = useState("");
-  // const [comments, setComments] = useState([]); // GET 한 스터디 포스트 댓글 저장해둘 상태
+  const [isCommited, setIsCommited] = useState(false);
 
+  /*
+   */
   const getDetailStudy = async () => {
     const response = await api.get(`/study/${postId}`);
     console.log(response);
     setPostData(response.data);
   };
-  /*
-  const getStudyComment = async () => {
-    const res = await api.get(`/api/study/${postId}/talk`);
-    console.log(res);
-    setComments(res.data);
-  };
-  */
 
   useEffect(() => {
     getDetailStudy();
-    // getStudyComment();
   }, []);
 
   if (!postData) {
     return null;
   }
 
-  // console.log(comments);
-
   const handleInputCommit = (e) => {
     setTitle(e.target.value);
   };
 
   const handleCommentSubmit = () => {
+    setIsCommited(true);
     const commentData = {
       contents: title, // 사용자가 입력한 동적인 값
     };
@@ -52,13 +45,32 @@ const DetailStudyPost = () => {
       .post(`/user/study/${postId}/talk/write`, commentData)
       .then((response) => {
         console.log("댓글이 성공적으로 전송되었습니다.", response.data);
-        // 성공 후 처리 로직
+        setIsCommited(false);
       })
       .catch((error) => {
         console.error("댓글 전송에 실패했습니다.", error);
         // 실패 시 처리 로직
       });
     // console.log(commentData);
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await api.get(`/user/study/${postId}/heart`);
+      console.log("좋아요 성공", response.data);
+
+      setPostData((prevData) => ({
+        ...prevData,
+        heartNum:
+          response.data === "하트 누름"
+            ? prevData.heartNum + 1
+            : response.data === "하트 지움"
+            ? prevData.heartNum - 1
+            : prevData.heartNum,
+      }));
+    } catch (error) {
+      console.error("좋아요 실패", error);
+    }
   };
 
   return (
@@ -76,9 +88,10 @@ const DetailStudyPost = () => {
           users={postData.users}
           heartNum={postData.heartNum}
           commentNum={postData.commentNum}
+          onLike={handleLike}
         />
       </PostBlock>
-      <CommentList postId={postId} />
+      <StudyCommentList postId={postId} isCommited={isCommited} />
       <CommentContainer>
         <InputContainer>
           <TitleInput
@@ -105,11 +118,8 @@ const PostItem = ({
   users,
   heartNum,
   commentNum,
+  onLike,
 }) => {
-  const handleLikes = () => {
-    console.log("좋아요!");
-  };
-
   return (
     <PostItemBlock>
       <UserInfo>
@@ -140,11 +150,23 @@ const PostItem = ({
         {nowNum < 5 ? <MoreMembers /> : null}
       </MembersProfiles>
       <PostStats>
-        <LikesButton onClick={handleLikes}>
-          <LikesIcon />
+        <LikesButton onClick={onLike}>
+          <FavoriteIcon
+            sx={{
+              color: "#929292",
+              width: "20px",
+              height: "20px",
+            }}
+          />
         </LikesButton>
         <StatsItem>{heartNum}</StatsItem>
-        <CommentsIcon />
+        <ChatBubbleOutlineRoundedIcon
+          sx={{
+            color: "#929292",
+            width: "20px",
+            height: "20px",
+          }}
+        />
         <StatsItem>{commentNum}</StatsItem>
       </PostStats>
     </PostItemBlock>
@@ -152,28 +174,42 @@ const PostItem = ({
 };
 
 const PostBlock = styled.div`
-  display: flex;
-  justify-content: center;
   border-bottom: 1px solid #d9d9d9;
   width: 100%;
-  height: 260px;
+  height: 220px;
   font-size: 12px;
-  flex-direction: column;
 `;
 
 const PostItemBlock = styled.div`
   flex-direction: column;
   width: 100%;
-  padding: 2rem;
+  height: 200px;
+  padding: 1rem;
   & + & {
     border-top: 3px solid #d9d9d9;
+  }
+  h2 {
+    color: #000;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  p {
+    color: #000;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;
 
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 30px; // 포스트 제목 위에 약간의 여백을 줍니다.
+  margin-bottom: 20px; // 포스트 제목 위에 약간의 여백을 줍니다.
 `;
 
 const ProfilePic = styled.img`
@@ -199,9 +235,9 @@ const TagList = styled.div`
   margin-top: 1rem; // 본문과 태그 사이의 간격을 지정합니다.
 `;
 const Tag = styled.div`
-  min-width: 50px;
+  min-width: 60px;
   border-radius: 8px;
-  background: #dff0e0;
+  background: #efefef;
   height: 19px;
   flex-shrink: 0;
   font-size: 12px;
@@ -247,10 +283,10 @@ const MoreMembers = styled(AddIcon)`
 
 const PostStats = styled.div`
   display: flex;
-  justify-content: flex-end;
-  font-size: 12px;
+  width: 100%;
+  justify-content: right;
+  font-size: 9px;
   color: #666;
-  margin-top: 13px;
 `;
 
 const StatsItem = styled.span`
@@ -258,12 +294,7 @@ const StatsItem = styled.span`
   margin-right: 30px; // 아이템 사이의 간격 조절
   display: flex;
   align-items: center;
-`;
-
-const LikesIcon = styled(FavoriteBorderIcon)`
-  width: 8px;
-  height: 8px;
-  color: #b3b3b3;
+  font-size: 12px;
 `;
 
 const LikesButton = styled.button`
@@ -272,12 +303,6 @@ const LikesButton = styled.button`
   font-size: 12px;
   color: #666;
   gap: 5px;
-`;
-
-const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
-  width: 8px;
-  height: 8px;
-  color: #b3b3b3;
 `;
 
 const CommentContainer = styled.div`

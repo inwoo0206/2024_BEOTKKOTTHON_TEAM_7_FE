@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../utils/customAxios';
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../utils/customAxios";
 
 const bestStudy = async () => {
   try {
-    const data = await api.get('/study/heart3');
+    const data = await api.get("/study/heart3");
     return data;
   } catch (error) {
     console.log(error);
@@ -12,7 +12,7 @@ const bestStudy = async () => {
 
 export const useHome = () => {
   const { data } = useQuery({
-    queryKey: ['Beststudy'],
+    queryKey: ["Beststudy"],
     queryFn: bestStudy,
   });
   return data;

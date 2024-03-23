@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { api } from "../../utils/customAxios";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const CommentItem = ({ contents, profilePic, userName }) => {
   return (
@@ -14,28 +14,38 @@ const CommentItem = ({ contents, profilePic, userName }) => {
   );
 };
 
-const CommentList = ({ postId }) => {
-  const [comments, setComments] = useState([]);
-
+const StudyCommentList = ({ postId, isCommited }) => {
   const getStudyComment = async () => {
-    const res = await api.get(`/study/${postId}/talk`);
-    console.log(res);
-    setComments(res.data);
+    try {
+      const data = await api.get(`/study/${postId}/talk`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   };
-  useEffect(() => {
-    getStudyComment();
-  }, [postId]);
+
+  const useComment = () => {
+    const { data: comments } = useQuery({
+      queryKey: ["comments", isCommited],
+      queryFn: getStudyComment,
+    });
+    return comments;
+  };
+
+  const comments = useComment();
+
   console.log(comments);
   return (
     <CommentBlock>
-      {comments.map((comment) => (
-        <CommentItem
-          key={postId}
-          contents={comment.contents}
-          profilePic="/path/to/profile3.jpg"
-          userName="홍길동"
-        />
-      ))}
+      {comments &&
+        comments.data.map((comment) => (
+          <CommentItem
+            key={comment.commentsId}
+            contents={comment.contents}
+            profilePic="/path/to/profile3.jpg"
+            userName="홍길동"
+          />
+        ))}
     </CommentBlock>
   );
 };
@@ -52,7 +62,9 @@ const StyledText = styled.div`
 const CommentBlock = styled.div`
   display: flex;
   justify-content: center;
-  padding: 15px;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 30px;
   width: 100%;
   flex-direction: column;
   border-bottom: 1px solid #d9d9d9;
@@ -61,7 +73,8 @@ const CommentBlock = styled.div`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 15px; // 포스트 제목 위에 약간의 여백을 줍니다.
+  margin-top: 10px;
+  margin-bottom: 10px; // 포스트 제목 위에 약간의 여백을 줍니다.
 `;
 
 const ProfilePic = styled.img`
@@ -83,4 +96,4 @@ const UserName = styled.span`
   letter-spacing: -0.1px;
 `;
 
-export default CommentList;
+export default StudyCommentList;
