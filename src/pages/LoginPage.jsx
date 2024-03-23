@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import { api } from '../utils/customAxios';
 import { useGoogleLogin } from '@react-oauth/google';
 import googlImg from '../assets/svgs/google.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const navigate = useNavigate();
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (googleRes) => {
       const backResponse = await api.post('/login/oauth2/code/google', {
@@ -13,8 +15,10 @@ export default function Login() {
       //   idToken: googleRes,
       // });
       console.log(backResponse);
+      navigate('/');
     },
     onError: (error) => {
+      navigate('/');
       console.log(error);
     },
     // flow: 'auth-code',

@@ -14,7 +14,9 @@ export default function MainCarousel() {
       {/* {data.map((item) => {
         return <CarouselImg key={item.id} src={item.imgPath} />;
       })} */}
+
       <CarouselImg src={banner1} />
+
       <CarouselImg src={banner2} />
     </MultiCarousel>
   );
