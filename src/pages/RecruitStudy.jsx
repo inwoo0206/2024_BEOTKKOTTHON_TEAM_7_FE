@@ -56,6 +56,7 @@ export default function RecruitStudy() {
     setFrequency(frequency); // 컴포넌트 상태를 업데이트합니다.
     console.log("clicked");
   };
+
   return (
     <>
       <Container>
@@ -203,10 +204,9 @@ const TagsBox = styled.div`
   margin-top: 14px;
 `;
 const SubjectTag = styled.div`
-  background-color: ${(props) => (props.isselected ? "#4CAF50" : "#f4f4f4")};
+  background-color: ${(props) => (props.isselected ? "#4CAF50" : "#a7a7a7")};
   min-width: 40px;
   border-radius: 8px;
-  background: "#a7a7a7";
   height: 19px;
   flex-shrink: 0;
   font-size: 9px;
@@ -217,7 +217,7 @@ const SubjectTag = styled.div`
 `;
 
 const ChooseDateTag = styled.div`
-  background-color: ${(props) => (props.isselected ? "#4CAF50" : "#f4f4f4")};
+  background-color: ${(props) => (props.isselected ? "#4CAF50" : "#a7a7a7")};
   min-width: 69px;
   border-radius: 8px;
   height: 19px;

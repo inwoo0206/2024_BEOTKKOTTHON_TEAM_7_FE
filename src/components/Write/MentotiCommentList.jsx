@@ -14,10 +14,10 @@ const CommentItem = ({ contents, profilePic, userName }) => {
   );
 };
 
-const StudyCommentList = ({ postId, isCommited }) => {
-  const getStudyComment = async () => {
+const MentotiCommentList = ({ postId, isCommited }) => {
+  const getMentotiComment = async () => {
     try {
-      const data = await api.get(`/study/${postId}/talk`);
+      const data = await api.get(`/mentor/${postId}/talk`);
       return data;
     } catch (error) {
       console.log(error);
@@ -27,7 +27,7 @@ const StudyCommentList = ({ postId, isCommited }) => {
   const useComment = () => {
     const { data: comments } = useQuery({
       queryKey: ["comments", isCommited],
-      queryFn: getStudyComment,
+      queryFn: getMentotiComment,
     });
     return comments;
   };
@@ -96,4 +96,4 @@ const UserName = styled.span`
   letter-spacing: -0.1px;
 `;
 
-export default StudyCommentList;
+export default MentotiCommentList;
