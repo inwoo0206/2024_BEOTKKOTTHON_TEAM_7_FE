@@ -43,7 +43,7 @@ const Container = styled.div`
 const MoveToRegisterButton = styled.button`
   position: fixed;
   bottom: 110px;
-  left: 330px;
+  left: 315px;
   z-index: 1000;
 
   width: 42px;

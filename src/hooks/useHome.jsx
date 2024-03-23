@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../utils/customAxios';
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../utils/customAxios";
 
 const bestStudy = async () => {
   try {
-    const data = await api.get('/study/heart3');
+    const data = await api.get("/study/heart3");
     return data;
   } catch (error) {
     console.log(error);
@@ -12,7 +12,7 @@ const bestStudy = async () => {
 
 const popularStudy = async () => {
   try {
-    const data = await api.get('/study/comment3');
+    const data = await api.get("/study/comment3");
     return data;
   } catch (error) {
     console.log(error);
@@ -21,11 +21,11 @@ const popularStudy = async () => {
 
 export const useHome = () => {
   const { data: best } = useQuery({
-    queryKey: ['BestStudy'],
+    queryKey: ["BestStudy"],
     queryFn: bestStudy,
   });
   const { data: popular } = useQuery({
-    queryKey: ['PopularStudy'],
+    queryKey: ["PopularStudy"],
     queryFn: popularStudy,
   });
   return { best, popular };

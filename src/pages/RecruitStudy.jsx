@@ -1,113 +1,102 @@
 import styled from "styled-components";
-import WriteActionButtons from "../components/Write/WriteActionButtons";
 import CropOriginalIcon from "@mui/icons-material/CropOriginal";
-import { useState, useEffect, useRef } from "react";
-import Quill from "quill";
-import "quill/dist/quill.bubble.css";
+import { TextField } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-// import { api } from "../utils/customAxios";
-
-/*
-const handleStudyPostSubmit = () => {
-  const studyPostData = {{
-    title: title,
-    contents: contents,
-    subject: subject,
-    recruitNum: recruitNum,
-    frequency: frequency,
-  }
-}
-
-  api
-      .post(`/api/user/study/write`, studyPostData)
-      .then((response) => {
-        console.log("포스트가 성공적으로 등록되었습니다.", response.data);
-        // 성공 후 처리 로직
-      })
-      .catch((error) => {
-        console.error("포스트 등록에 실패했습니다.", error);
-        // 실패 시 처리 로직
-      });
-};
-*/
-const Editor = () => {
-  const { register, setValue } = useForm();
-  const quillElement = useRef(null);
-  const quillInstance = useRef(null);
-
-  useEffect(() => {
-    quillInstance.current = new Quill(quillElement.current, {
-      placeholder: "내용을 입력하세요.",
-      modules: {
-        toolbar: [
-          [{ header: "1" }, { header: "2" }],
-          ["bold", "italic", "underline", "strike"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["blockquote", "code-block", "link", "image"],
-        ],
-      },
-    });
-
-    // Quill 내용이 변경될 때마다 폼의 값 업데이트
-    quillInstance.current.on("text-change", () => {
-      setValue("content", quillInstance.current.root.innerHTML);
-    });
-  }, [setValue]);
-
-  return (
-    <form>
-      <TitleInput {...register("title")} placeholder="제목을 입력하세요" />
-      <QuillWrapper>
-        <div ref={quillElement} />
-      </QuillWrapper>
-    </form>
-  );
-};
-
-const dateTagBox = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+import { api } from "../utils/customAxios";
+import { useNavigate } from "react-router-dom";
 
 export default function RecruitStudy() {
-  const [subject, setSubject] = useState();
-  const [frequency, setFrequency] = useState();
+  const [subject, setSubject] = useState("");
+  const [frequency, setFrequency] = useState("");
   const [recruitNum, setRecruitNum] = useState("");
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
-  // setIsSelectedTag(true);
-  const subjectTagClick = (subjectName) => {
-    setSubject(subjectName);
+  const submitStudyHandler = async (data) => {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("contents", data.contents);
+    formData.append("recruitNum", data.recruitNum);
+
+    console.log(subject);
+    console.log(frequency);
+    const recruitNumInt = parseInt(recruitNum, 10);
+
+    if (isNaN(recruitNumInt) || recruitNumInt <= 0) {
+      console.error("유효하지 않은 희망 인원수입니다.");
+      return;
+    }
+
+    const recruitStudyData = {
+      title: data.title,
+      contents: data.contents,
+      subject: subject, // 상태에서 설정된 subject를 사용
+      recruitNum: data.recruitNum,
+      frequency: frequency,
+    };
+
+    try {
+      const res = await api.post(`/user/study/write`, recruitStudyData);
+      console.log(res);
+      console.log(recruitStudyData);
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const subjectTagClick = (subject) => {
+    setSubject(subject);
     console.log("clicked");
   };
 
   const frequencyTagClick = (frequency) => {
-    setFrequency(frequency);
+    console.log(frequency);
+    setFrequency(frequency); // 컴포넌트 상태를 업데이트합니다.
     console.log("clicked");
   };
-
   return (
     <>
       <Container>
-        <Editor />
+        <TitleInput
+          type="title"
+          {...register("title")}
+          placeholder="제목을 입력하세요"
+        />
+        <TextField
+          {...register("contents", { required: true })}
+          id="outlined-multiline-static"
+          multiline
+          rows={10}
+          placeholder="내용을 입력하세요"
+          sx={{
+            width: "100%",
+            fontSize: "12px",
+          }}
+        />
+        <UploadPicButton>
+          <UploadPicIcon />
+          <UploadPicSpan name="photoURL" placeholder="업로드 하기" />
+        </UploadPicButton>
         <SelectContainer>
-          <UploadPicButton>
-            <UploadPicIcon />
-            이미지 업로드 하기
-          </UploadPicButton>
           <StyledText>모집 분야를 선택하세요.</StyledText>
           <TagsBox>
             <SubjectTag
               onClick={() => subjectTagClick("어학")}
-              isSelected={subject === "어학"}
+              isselected={subject === "어학"}
             >
               어학
             </SubjectTag>
             <SubjectTag
               onClick={() => subjectTagClick("자격증")}
-              isSelected={subject === "자격증"}
+              isselected={subject === "자격증"}
             >
               자격증
             </SubjectTag>
             <SubjectTag
               onClick={() => subjectTagClick("전공")}
-              isSelected={subject === "전공"}
+              isselected={subject === "전공"}
             >
               전공
             </SubjectTag>
@@ -115,26 +104,53 @@ export default function RecruitStudy() {
           <StyledText>희망 인원수</StyledText>
           <InputContainer>
             <TextInput
-              value={recruitNum}
+              type="recruitNum"
+              {...register("recruitNum")}
               onChange={(e) => setRecruitNum(e.target.value)}
             />
             <Label>명</Label>
           </InputContainer>
           <StyledText>희망하는 스터디 일 수</StyledText>
           <TagsBox>
-            {dateTagBox.map((tagBox) => (
-              <ChooseDateTag
-                key={tagBox.id}
-                onClick={() => frequencyTagClick(tagBox.id)}
-                isSelectedFrequency={frequency === tagBox.id}
-              >
-                {tagBox.id !== 4
-                  ? `1주일 ${tagBox.id}번`
-                  : `1주일 ${tagBox.id}번 이상`}
-              </ChooseDateTag>
-            ))}
+            <ChooseDateTag
+              onClick={() => frequencyTagClick("한번")}
+              isselected={frequency === "한번"}
+            >
+              1주일 1번
+            </ChooseDateTag>
+            <ChooseDateTag
+              onClick={() => frequencyTagClick("두번")}
+              isselected={frequency === "두번"}
+            >
+              1주일 2번
+            </ChooseDateTag>
+            <ChooseDateTag
+              onClick={() => frequencyTagClick("세번")}
+              isselected={frequency === "세번"}
+            >
+              1주일 3번
+            </ChooseDateTag>
+            <ChooseDateTag
+              onClick={() => frequencyTagClick("네번 이상")}
+              isselected={frequency === "네번 이상"}
+            >
+              1주일 4번 이상
+            </ChooseDateTag>
           </TagsBox>
-          <WriteActionButtons />
+          <WriteActionButtonsBlock>
+            <Button
+              style={{ backgroundColor: "#DADADA" }}
+              onClick={() => navigate(-1)}
+            >
+              취소하기
+            </Button>
+            <Button
+              style={{ backgroundColor: "#359c3a" }}
+              onClick={handleSubmit(submitStudyHandler)}
+            >
+              등록하기
+            </Button>
+          </WriteActionButtonsBlock>
         </SelectContainer>
       </Container>
     </>
@@ -142,7 +158,6 @@ export default function RecruitStudy() {
 }
 
 const Container = styled.div`
-  display: flex;
   align-items: center; /* 상단 정렬 */
   height: 100vh; /* 전체 높이 */
   padding-top: 20px; /* 상단 여백 */
@@ -188,10 +203,10 @@ const TagsBox = styled.div`
   margin-top: 14px;
 `;
 const SubjectTag = styled.div`
+  background-color: ${(props) => (props.isselected ? "#4CAF50" : "#f4f4f4")};
   min-width: 40px;
   border-radius: 8px;
-  background: ${(props) =>
-    props.isSelected ? "#A4D258" : "#a7a7a7"}; // 선택 여부에 따라 배경색 변경
+  background: "#a7a7a7";
   height: 19px;
   flex-shrink: 0;
   font-size: 9px;
@@ -202,12 +217,9 @@ const SubjectTag = styled.div`
 `;
 
 const ChooseDateTag = styled.div`
+  background-color: ${(props) => (props.isselected ? "#4CAF50" : "#f4f4f4")};
   min-width: 69px;
   border-radius: 8px;
-  background: ${(props) =>
-    props.isSelectedFrequency
-      ? "#A4D258"
-      : "#a7a7a7"}; // 선택 여부에 따라 배경색 변경
   height: 19px;
   flex-shrink: 0;
   font-size: 9px;
@@ -256,7 +268,7 @@ const StyledText = styled.div`
 
 const TitleInput = styled.input`
   display: block;
-  width: 350px;
+  width: 100%;
   height: 40px;
   padding: 9px 16px;
   box-sizing: border-box;
@@ -266,24 +278,32 @@ const TitleInput = styled.input`
   margin-bottom: 14px;
 `;
 
-const QuillWrapper = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  width: 350px;
-  height: 280px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  border: 1px solid #e1e1e8;
-  background: #fff;
-  margin-top: 20px;
+const UploadPicSpan = styled.input`
+  font-size: 10px;
+  color: #919eb6;
+  font-weight: 400;
+  margin-left: 4px;
+`;
 
-  .ql-editor {
-    padding: 0;
-    min-height: 320px;
-    font-size: 1.125rem;
-    line-height: 1.5;
-  }
-  .ql-editor.ql-blank::before {
-    left: 0px;
+const Button = styled.button`
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.25rem 1rem;
+  color: white;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid #fff;
+  width: 150px;
+  height: 55px;
+  flex-shrink: 0;
+`;
+
+const WriteActionButtonsBlock = styled.div`
+  margin-top: 30px;
+  margin-bottom: 50px;
+  button + button {
+    margin-left: 0.5rem;
   }
 `;

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import AddIcon from "@mui/icons-material/Add";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { listStudyPosts } from "../../utils/studies";
+import { api } from "../../utils/customAxios";
+import { useQuery } from "@tanstack/react-query";
 
 const PostListBlock = styled.div`
   justify-content: center; /* 가운데 정렬 */
@@ -20,9 +20,25 @@ const PostListBlock = styled.div`
 const PostItemBlock = styled.div`
   flex-direction: column;
   width: 100%;
-  padding: 3rem;
+  padding: 26px;
   & + & {
     border-top: 3px solid #d9d9d9;
+  }
+  h2 {
+    color: #000;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  p {
+    color: #000;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 `;
 
@@ -33,15 +49,20 @@ const UserInfo = styled.div`
 `;
 
 const ProfilePic = styled.img`
-  width: 35px; // 프로필 사진의 크기를 지정합니다.
-  height: 35px; // 프로필 사진의 크기를 지정합니다.
+  width: 32px; // 프로필 사진의 크기를 지정합니다.
+  height: 32px; // 프로필 사진의 크기를 지정합니다.
   border-radius: 50%; // 원형으로 프로필 사진을 표시합니다.
   margin-right: 1rem; // 이름과의 간격을 지정합니다.
 `;
 
 const UserName = styled.span`
-  font-weight: bold;
-  font-size: 15px;
+  color: #000;
+
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 `;
 
 const TagList = styled.div`
@@ -50,9 +71,9 @@ const TagList = styled.div`
   margin-top: 1rem; // 본문과 태그 사이의 간격을 지정합니다.
 `;
 const Tag = styled.div`
-  min-width: 40px;
+  min-width: 50px;
   border-radius: 8px;
-  background: #dff0e0;
+  background: #eeeeee;
   height: 19px;
   flex-shrink: 0;
   font-size: 11px;
@@ -78,12 +99,12 @@ const DateInfo = styled.span`
 const MembersProfiles = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 10px;
 `;
 
 const ProfileImage = styled.img`
-  width: 30px; // 원하는 크기로 조절
-  height: 30px;
+  width: 23px; // 원하는 크기로 조절
+  height: 23px;
   border-radius: 50%;
   margin-right: 0.5rem; // 프로필 이미지 사이의 간격 조절
 
@@ -94,16 +115,18 @@ const ProfileImage = styled.img`
 
 const MoreMembers = styled(AddIcon)`
   font-size: 16px;
+  width: 16px;
+  height: 16px;
   color: black;
 `;
 
 const PostStats = styled.div`
   display: flex;
   width: 100%;
-  justify-content: right;
+  justify-content: flex-end;
+  padding-right: 15px;
   font-size: 9px;
   color: #666;
-  margin-top: 13px;
 `;
 
 const StatsItem = styled.span`
@@ -111,17 +134,6 @@ const StatsItem = styled.span`
   margin-right: 10px; // 아이템 사이의 간격 조절
   display: flex;
   align-items: center;
-`;
-
-const LikesIcon = styled(FavoriteBorderIcon)`
-  width: 9px;
-  height: 9px;
-  color: #b3b3b3;
-`;
-const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
-  width: 9px;
-  height: 9px;
-  color: #b3b3b3;
 `;
 
 const IsCompletedBlock = styled.div`
@@ -195,9 +207,21 @@ const PostItem = ({
         {nowNum < 5 ? <MoreMembers /> : null}
       </MembersProfiles>
       <PostStats>
-        <LikesIcon />
+        <FavoriteIcon
+          sx={{
+            color: "#929292",
+            width: "12px",
+            height: "12px",
+          }}
+        />
         <StatsItem>{heartNum}</StatsItem>
-        <CommentsIcon />
+        <ChatBubbleOutlineRoundedIcon
+          sx={{
+            color: "#929292",
+            width: "12px",
+            height: "12px",
+          }}
+        />
         <StatsItem>{commentNum}</StatsItem>
       </PostStats>
     </PostItemBlock>
@@ -212,45 +236,46 @@ const FindStudyList = () => {
     navigate(`/find-study/postDetail/${postId}`);
   };
 
-  const [posts, setPosts] = useState([]); // 스터디 포스트를 저장할 상태
+  const listStudyPosts = async () => {
+    try {
+      const data = await api.get("/study");
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  useEffect(() => {
-    const fetchStudies = async () => {
-      try {
-        const data = await listStudyPosts(); // 비동기로 데이터를 불러옵니다.
-        setPosts(data); // 불러온 데이터를 상태에 저장합니다.
-      } catch (error) {
-        console.error("스터디 포스트를 불러오는 데 실패했습니다", error);
-      }
-    };
+  const useStudy = () => {
+    const { data: posts } = useQuery({
+      queryKey: ["posts"],
+      queryFn: listStudyPosts,
+    });
+    return posts;
+  };
 
-    fetchStudies();
-  }, []);
-
-  if (!posts) {
-    return null;
-  }
+  const posts = useStudy();
 
   return (
     <>
       <PostListBlock>
-        {posts.map((post) => (
-          <PostItem
-            key={post.id}
-            onClick={() => handlePostClick(post.id)} // onClick 이벤트 추가
-            title={post.title}
-            contents={post.contents}
-            picture={post.picture}
-            writer={post.writer}
-            recruitNum={post.recruitNum}
-            subject={post.subject}
-            frequency={post.frequency}
-            users={post.users}
-            heartNum={post.heartNum}
-            commentNum={post.commentNum}
-            completed={post.completed}
-          />
-        ))}
+        {posts &&
+          posts.data.map((post) => (
+            <PostItem
+              key={post.id}
+              onClick={() => handlePostClick(post.id)} // onClick 이벤트 추가
+              title={post.title}
+              contents={post.contents}
+              picture={post.picture}
+              writer={post.writer}
+              recruitNum={post.recruitNum}
+              subject={post.subject}
+              frequency={post.frequency}
+              users={post.users}
+              heartNum={post.heartNum}
+              commentNum={post.commentNum}
+              completed={post.completed}
+            />
+          ))}
       </PostListBlock>
     </>
   );
