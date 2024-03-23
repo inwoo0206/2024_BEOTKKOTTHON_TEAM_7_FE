@@ -22,7 +22,7 @@ const PostItemBlock = styled.div`
   width: 100%;
   padding: 26px;
   & + & {
-    border-top: 3px solid #d9d9d9;
+    border-top: 1px solid #d9d9d9;
   }
   h2 {
     color: #000;
@@ -73,7 +73,6 @@ const TagList = styled.div`
 const Tag = styled.div`
   min-width: 50px;
   border-radius: 8px;
-  background: #eeeeee;
   height: 19px;
   flex-shrink: 0;
   font-size: 11px;
@@ -156,7 +155,6 @@ const IsCompletedBlock = styled.div`
   background: #666666;
 `;
 
-// completed 확인해야함
 const PostItem = ({
   title,
   contents,
@@ -177,6 +175,7 @@ const PostItem = ({
       onClick={onClick}
       style={{
         backgroundColor: completed ? "#aaaaaa" : "none",
+        color: completed ? "#aaaaaa" : "none",
       }}
     >
       {completed && <IsCompletedBlock>모집완료</IsCompletedBlock>}
@@ -196,9 +195,27 @@ const PostItem = ({
       <h2>{title}</h2>
       <p>{contents}</p>
       <TagList>
-        <Tag>{recruitNum} 명</Tag>
-        <Tag>{subject}</Tag>
-        <Tag>{frequency}</Tag>
+        <Tag
+          style={{
+            background: completed ? "#CACACA" : "#efefef",
+          }}
+        >
+          {recruitNum} 명
+        </Tag>
+        <Tag
+          style={{
+            background: completed ? "#CACACA" : "#efefef",
+          }}
+        >
+          {subject}
+        </Tag>
+        <Tag
+          style={{
+            background: completed ? "#CACACA" : "#efefef",
+          }}
+        >
+          {frequency}
+        </Tag>
       </TagList>
       <MembersProfiles>
         {displayMembers.map((user) => (
