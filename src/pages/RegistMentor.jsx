@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import styled from "styled-components";
 import CropOriginalIcon from "@mui/icons-material/CropOriginal";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -6,14 +5,6 @@ import test from "../assets/svgs/google.svg";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { TextField } from "@mui/material";
-=======
-import styled from 'styled-components';
-// import WriteActionButtons from '../components/Write/WriteActionButtons';
-import CropOriginalIcon from '@mui/icons-material/CropOriginal';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import test from '../assets/svgs/google.svg';
-import { useNavigate } from 'react-router-dom';
->>>>>>> 4ff4190029af6c763cb28ad6198aefbe6d648bb2
 
 export default function RegistMentor() {
   const { register, handleSubmit } = useForm();
@@ -65,7 +56,6 @@ export default function RegistMentor() {
         <StyledText>학점 혹은 점수</StyledText>
         <TitleInput type="score" {...register("score")} />
         <StyledText>증빙자료</StyledText>
-<<<<<<< HEAD
         <TextField
           {...register("contents", { required: true })}
           id="outlined-multiline-static"
@@ -100,14 +90,6 @@ export default function RegistMentor() {
             등록하기
           </Button>
         </WriteActionButtonsBlock>
-=======
-        <SourceInput />
-        <StyledButton>
-          <UploadPicIcon />
-          이미지 업로드 하기
-        </StyledButton>
-        {/* <WriteActionButtons /> */}
->>>>>>> 4ff4190029af6c763cb28ad6198aefbe6d648bb2
       </Container>
     </>
   );
@@ -202,7 +184,7 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   color: #919eb6;
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings: "clig" off, "liga" off;
   font-family: Inter;
   font-size: 12px;
   font-style: normal;
