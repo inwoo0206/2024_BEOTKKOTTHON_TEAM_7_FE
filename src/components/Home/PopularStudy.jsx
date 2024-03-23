@@ -13,8 +13,12 @@ export default function PopularStudy() {
       <PopularBoxs>
         {popular &&
           popular.data.map((item) => {
+            const postId = item.id;
             return (
-              <PopularBox key={item.id}>
+              <PopularBox
+                key={item.id}
+                onClick={() => navigate(`/find-study/postDetail/${postId}`)}
+              >
                 <ProfileContent>
                   <Date>03/13 18:28</Date>
                   <Heart>{`♥ ${item.heartNum}`}</Heart>

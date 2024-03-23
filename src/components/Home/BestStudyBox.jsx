@@ -1,11 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-export default function BestStudyBox({ title, rating }) {
+export default function BestStudyBox({ title, rating, id: postId }) {
+  const navigate = useNavigate();
   const gold = '🥇';
   const silver = '🥈';
   const bronze = '🥉';
   return (
-    <Wrapper>
+    <Wrapper onClick={() => navigate(`/find-study/postDetail/${postId}`)}>
       <MedalBox>
         {rating === 0 ? gold : rating === 1 ? silver : bronze}
       </MedalBox>
@@ -28,6 +30,7 @@ const Wrapper = styled.div`
   align-items: center;
   margin-right: 30px;
   margin-bottom: 5px;
+  cursor: pointer;
 `;
 const StudyName = styled.span`
   color: #4d4d4d;

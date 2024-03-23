@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import WriteActionButtons from "../components/Write/WriteActionButtons";
-import CropOriginalIcon from "@mui/icons-material/CropOriginal";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import test from "../assets/svgs/google.svg";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+// import WriteActionButtons from '../components/Write/WriteActionButtons';
+import CropOriginalIcon from '@mui/icons-material/CropOriginal';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import test from '../assets/svgs/google.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegistMentor() {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export default function RegistMentor() {
           <UploadPicIcon />
           이미지 업로드 하기
         </StyledButton>
-        <WriteActionButtons />
+        {/* <WriteActionButtons /> */}
       </Container>
     </Wrapper>
   );
@@ -153,7 +153,7 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   color: #919eb6;
-  font-feature-settings: "clig" off, "liga" off;
+  font-feature-settings: 'clig' off, 'liga' off;
   font-family: Inter;
   font-size: 12px;
   font-style: normal;

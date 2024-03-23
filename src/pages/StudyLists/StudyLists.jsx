@@ -1,12 +1,36 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 import searchIcon from '../../assets/svgs/searchIcon.svg';
 import { useNavigate } from 'react-router-dom';
-import { useStudyComplete } from '../../hooks/useStudyComplete';
+import { getCompletedStudy } from '../../hooks/useStudyComplete';
+import { useQuery } from '@tanstack/react-query';
+// import { usePrefetchMentoring } from '../../hooks/useStudyComplete';
 
 export default function StudyLists() {
   const navigate = useNavigate();
 
-  const data = useStudyComplete();
+  const [search, setSearch] = useState('');
+
+  const { data } = useQuery({
+    queryKey: ['studyCompleted'],
+    queryFn: getCompletedStudy,
+  });
+  const [realData, setRealData] = useState(data?.data);
+
+  // usePrefetchMentoring();
+
+  useEffect(() => {
+    if (!data) return;
+
+    const filteredData = data.data.filter(
+      (study) =>
+        study.contents.includes(search) ||
+        study.subject.includes(search) ||
+        study.title.includes(search) ||
+        study.frequency.includes(search),
+    );
+    setRealData(filteredData);
+  }, [search, data]);
 
   return (
     <>
@@ -25,26 +49,31 @@ export default function StudyLists() {
             <img src={searchIcon} />
           </SearchImgBox>
 
-          <SearchInput placeholder="스터디를 검색해보세요.(작성자,태그)" />
+          <SearchInput
+            placeholder="스터디를 검색해보세요.(제목,태그)"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </SearchBox>
         <TeamWrapper>
-          {data?.data.map((item) => {
-            const studyId = item.id;
-            return (
-              <StudyBox
-                key={item.id}
-                onClick={() => navigate(`/study-lists/${studyId}`)}
-              >
-                <StudyBoxContent>
-                  <StudyTitle>{item.title}</StudyTitle>
-                  <StudyTags>
-                    <Tag>{item.subject}</Tag>
-                    <Tag>{`주${item.frequency}`}</Tag>
-                  </StudyTags>
-                </StudyBoxContent>
-              </StudyBox>
-            );
-          })}
+          {realData &&
+            realData.map((item) => {
+              const studyId = item.id;
+              return (
+                <StudyBox
+                  key={item.id}
+                  onClick={() => navigate(`/study-lists/${studyId}`)}
+                >
+                  <StudyBoxContent>
+                    <StudyTitle>{item.title}</StudyTitle>
+                    <StudyTags>
+                      <Tag>{item.subject}</Tag>
+                      <Tag>{`주${item.frequency}`}</Tag>
+                    </StudyTags>
+                  </StudyBoxContent>
+                </StudyBox>
+              );
+            })}
         </TeamWrapper>
       </ContentWrapper>
     </>
