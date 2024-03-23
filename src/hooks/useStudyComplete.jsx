@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../utils/customAxios';
 
-const getCompletedStudy = async () => {
+export const getCompletedStudy = async () => {
   const res = await api.get('/study/complete');
   return res;
 };
@@ -15,7 +15,7 @@ export function useStudyComplete() {
   return data;
 }
 
-const getCompletedMentoring = async () => {
+export const getCompletedMentoring = async () => {
   const res = await api.get('/');
   console.log(res);
   return res;

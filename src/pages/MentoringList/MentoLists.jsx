@@ -1,6 +1,9 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import searchIcon from '../../assets/svgs/searchIcon.svg';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getCompletedMentoring } from '../../hooks/useStudyComplete';
 
 const studyLists = [
   {
@@ -37,6 +40,13 @@ const studyLists = [
 
 export default function MentoLists() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
+  const { data } = useQuery({
+    queryKey: ['studyCompleted'],
+    queryFn: getCompletedMentoring,
+  });
+
+  const [realData, setRealData] = useState(data?.data);
 
   return (
     <>

@@ -2,11 +2,10 @@ import styled from 'styled-components';
 
 import BestStudyBox from './BestStudyBox';
 import { useHome } from '../../hooks/useHome';
-import { useNavigate } from 'react-router-dom';
 
 export default function BestStudy() {
   const { best } = useHome();
-  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <Title>우수 스터디</Title>
