@@ -3,12 +3,15 @@ import good from '../../assets/svgs/good.svg';
 import bad from '../../assets/svgs/bad.svg';
 import best from '../../assets/svgs/best.svg';
 import { Rating } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { api } from '../../utils/customAxios';
 
 export default function TeamEvalutation() {
   const navigate = useNavigate();
+  const { studyId, memberId } = useParams();
+  console.log(studyId);
+  console.log(memberId);
   const { state } = useLocation();
 
   const [selectedSticker, setSelectedSticker] = useState(null);
@@ -21,10 +24,15 @@ export default function TeamEvalutation() {
   };
 
   const handleSubmit = async () => {
-    console.log(selectedSticker, rating, content);
-
     try {
-      await api.post();
+      const res = await api.post('/user/study/rate', {
+        studyId,
+        memberId,
+        prefer: 1,
+        rate: rating,
+        message: content,
+      });
+      console.log(res);
     } catch (error) {
       console.log(error);
     }

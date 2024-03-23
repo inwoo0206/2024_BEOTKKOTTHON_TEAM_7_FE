@@ -42,42 +42,48 @@ export default function StudyCompletedPage() {
         </ImgWrapper>
         <StudyBoxWrapper>
           {data &&
-            data.data.dones.map((item) => {
-              return (
-                <Accordion
-                  sx={{
-                    marginBottom: '15px',
-                    borderRadius: '4px',
-                    width: '100%',
-                  }}
-                  key={item.id}
-                >
-                  <AccordionSummary
-                    expandIcon={<ArrowDownwardIcon fontSize="small" />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
+            data.data.dones
+              .slice()
+              .sort((a, b) => a.week - b.week)
+              .map((item) => {
+                return (
+                  <Accordion
+                    sx={{
+                      marginBottom: '15px',
+                      borderRadius: '4px',
+                      width: '100%',
+                    }}
+                    key={item.id}
                   >
-                    <Typography
-                      sx={{
-                        color: '#6D6D6D',
-                        fontSize: '14px',
-                        margin: '8px 0',
-                      }}
+                    <AccordionSummary
+                      expandIcon={<ArrowDownwardIcon fontSize="small" />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
                     >
-                      {`${item.week}주차 스터디`}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography sx={{ fontSize: '12px' }}>
-                      {item.contents}
-                    </Typography>
-                    {item.imageUrls.length > 0 && (
-                      <img src={item.imageUrls[0]} style={{ width: '100%' }} />
-                    )}
-                  </AccordionDetails>
-                </Accordion>
-              );
-            })}
+                      <Typography
+                        sx={{
+                          color: '#6D6D6D',
+                          fontSize: '14px',
+                          margin: '8px 0',
+                        }}
+                      >
+                        {`${item.week}주차 스터디`}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography sx={{ fontSize: '12px' }}>
+                        {item.contents}
+                      </Typography>
+                      {item.imageUrls.length > 0 && (
+                        <img
+                          src={item.imageUrls[0]}
+                          style={{ width: '100%' }}
+                        />
+                      )}
+                    </AccordionDetails>
+                  </Accordion>
+                );
+              })}
         </StudyBoxWrapper>
       </ContentWrapper>
     </Wrapper>

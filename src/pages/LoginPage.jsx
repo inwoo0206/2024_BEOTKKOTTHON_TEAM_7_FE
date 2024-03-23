@@ -1,14 +1,28 @@
-import styled from "styled-components";
-import googlImg from "../assets/svgs/google.svg";
+import styled from 'styled-components';
+import { api } from '../utils/customAxios';
+import { useGoogleLogin } from '@react-oauth/google';
+import googlImg from '../assets/svgs/google.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const handleGoogleLogin = async () => {
-    window.location.href =
-      "http://ec2-13-124-244-129.ap-northeast-2.compute.amazonaws.com:8080/api/oauth2/authorization/google";
-
-    // const res = await api.get('/oauth2/authorization/google');
-    // console.log(res);
-  };
+  const navigate = useNavigate();
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (googleRes) => {
+      const backResponse = await api.post('/login/oauth2/code/google', {
+        idToken: googleRes.access_token,
+      });
+      // const backResponse = await api.post('/login/oauth2/code/google', {
+      //   idToken: googleRes,
+      // });
+      console.log(backResponse);
+      navigate('/');
+    },
+    onError: (error) => {
+      navigate('/');
+      console.log(error);
+    },
+    // flow: 'auth-code',
+  });
 
   return (
     <LoginWrapper>

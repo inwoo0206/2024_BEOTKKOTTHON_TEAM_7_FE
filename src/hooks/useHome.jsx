@@ -10,10 +10,23 @@ const bestStudy = async () => {
   }
 };
 
+const popularStudy = async () => {
+  try {
+    const data = await api.get('/study/comment3');
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const useHome = () => {
-  const { data } = useQuery({
-    queryKey: ['Beststudy'],
+  const { data: best } = useQuery({
+    queryKey: ['BestStudy'],
     queryFn: bestStudy,
   });
-  return data;
+  const { data: popular } = useQuery({
+    queryKey: ['PopularStudy'],
+    queryFn: popularStudy,
+  });
+  return { best, popular };
 };
