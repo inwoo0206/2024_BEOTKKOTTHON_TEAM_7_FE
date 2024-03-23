@@ -1,48 +1,35 @@
-import { api } from '../../utils/customAxios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useHome } from '../../hooks/useHome';
 
 export default function PopularStudy() {
   const navigate = useNavigate();
 
-  const test = async () => {
-    // const res = await api.get('/test');
-    // console.log(res);
-    const res = await api.get('/test');
-    console.log(res);
-  };
+  const { popular } = useHome();
 
-  const studyTest = async () => {
-    const res = await api.get('/study');
-    console.log(res);
-  };
   return (
     <Wrapper>
       <Title>실시간 인기글</Title>
       <PopularBoxs>
-        <PopularBox>
-          <ProfileContent>
-            <Date>03/13 18:28</Date>
-            <ProfileImg />
-            <ProfileTitle>홍길동</ProfileTitle>
-            <ProfileRole>멘토</ProfileRole>
-          </ProfileContent>
-          <PopularBoxContent>C언어 A+입니다.</PopularBoxContent>
-          <TagBox>
-            <Tag>어학</Tag>
-            <Tag>어학</Tag>
-            <Tag>어학</Tag>
-          </TagBox>
-        </PopularBox>
-        <PopularBox>
-          <button onClick={() => navigate('/login')}>로그인(테스트용)</button>
-          <div>
-            <button onClick={test}>test</button>
-          </div>
-          <div>
-            <button onClick={studyTest}>스터디 테스트</button>
-          </div>
-        </PopularBox>
+        {popular &&
+          popular.data.map((item) => {
+            return (
+              <PopularBox key={item.id}>
+                <ProfileContent>
+                  <Date>03/13 18:28</Date>
+                  <Heart>{`♥ ${item.heartNum}`}</Heart>
+                  <ProfileImg src={item.users[0].picture} />
+                  <ProfileTitle>{item.title}</ProfileTitle>
+                  <ProfileRole>{item.subject}</ProfileRole>
+                </ProfileContent>
+                <PopularBoxContent>{item.contents}</PopularBoxContent>
+                <TagBox>
+                  <Tag>{item.frequency}</Tag>
+                  <Tag>{item.subject}</Tag>
+                </TagBox>
+              </PopularBox>
+            );
+          })}
       </PopularBoxs>
     </Wrapper>
   );
@@ -62,7 +49,7 @@ const Title = styled.h2`
   margin-bottom: 14px;
 `;
 const PopularBoxs = styled.div`
-  height: 300px;
+  height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -95,10 +82,20 @@ const Date = styled.span`
   font-style: normal;
   font-weight: 500;
 `;
+const Heart = styled.span`
+  position: absolute;
+  bottom: -15px;
+  right: 0px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  color: #929292;
+`;
 const ProfileImg = styled.img`
   height: 31px;
   width: 31px;
   margin-right: 10px;
+  border-radius: 50%;
 `;
 const ProfileTitle = styled.span`
   color: #000;

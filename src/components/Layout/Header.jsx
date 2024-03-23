@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import mainLogo from "../../assets/svgs/mainLogo.svg";
+import styled from 'styled-components';
+import mainLogo from '../../assets/svgs/mainLogo.svg';
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -10,8 +10,8 @@ export default function Header() {
     <Wrapper>
       <HeaderWrapper>
         <MainLogoWrapper>
-          <MainLogoImg src={mainLogo} onClick={() => navigate("/")} />
-          <MainLogoTitle onClick={() => navigate("/")}>
+          <MainLogoImg src={mainLogo} onClick={() => navigate('/')} />
+          <MainLogoTitle onClick={() => navigate('/')}>
             Study mate
           </MainLogoTitle>
         </MainLogoWrapper>
@@ -28,6 +28,7 @@ const HeaderWrapper = styled.div`
   padding-right: 10px;
   width: 100%;
   height: 60px;
+
   background-color: white;
   display: flex;
   justify-content: center;

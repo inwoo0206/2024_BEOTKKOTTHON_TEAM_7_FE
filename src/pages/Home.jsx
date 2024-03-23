@@ -8,9 +8,12 @@ import styled from 'styled-components';
 export default function Home() {
   return (
     <Wrapper>
-      <MainCarousel />
-      <div style={{ height: '10px' }}></div>
       <Welcome />
+
+      <MainCarousel />
+
+      <div style={{ height: '10px' }}></div>
+
       <BestStudy />
       <RecentMentoring />
       <PopularStudy />
@@ -20,7 +23,11 @@ export default function Home() {
 
 const Wrapper = styled.div`
   height: 100%;
-  background-color: #f9f9f9;
 
+  background: linear-gradient(
+    180deg,
+    #f9f9f9 0%,
+    rgba(211, 235, 212, 0.75) 100%
+  );
   overflow: hidden;
 `;
