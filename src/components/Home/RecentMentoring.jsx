@@ -18,21 +18,6 @@ const data = [
     tags: ['어학', '멘토', '한번'],
     title: 'C 언어 A+ 입니다 들어오세요.',
   },
-  {
-    id: 4,
-    tags: ['어학', '멘토', '한번'],
-    title: 'C 언어 A+ 입니다 들어오세요.',
-  },
-  {
-    id: 5,
-    tags: ['어학', '멘토', '한번'],
-    title: 'C 언어 A+ 입니다 들어오세요.',
-  },
-  {
-    id: 6,
-    tags: ['어학', '멘토', '한번'],
-    title: 'C 언어 A+ 입니다 들어오세요.',
-  },
 ];
 
 export default function RecentMentoring() {
@@ -54,7 +39,7 @@ export default function RecentMentoring() {
 
 const Wrapper = styled.div`
   padding: 15px;
-  height: 240px;
+  height: 170px;
 `;
 const TitleBox = styled.div`
   display: flex;
@@ -79,7 +64,7 @@ const MoreBox = styled.span`
   line-height: normal;
 `;
 const ContentBox = styled.div`
-  height: 216px;
+  height: 140px;
   border-radius: 4px;
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
   display: flex;
