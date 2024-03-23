@@ -6,10 +6,17 @@ const getCompletedStudy = async () => {
   return res;
 };
 
-export function useStudyComplete() {
+export function useStudyComplete(search) {
   const { data } = useQuery({
     queryKey: ['studyCompleted'],
     queryFn: getCompletedStudy,
+    select: (data) => {
+      return data.data.map((item) =>
+        item.filter((study) => {
+          return study.title.includes(search) || study.subject.includes(search);
+        }),
+      );
+    },
   });
 
   return data;
