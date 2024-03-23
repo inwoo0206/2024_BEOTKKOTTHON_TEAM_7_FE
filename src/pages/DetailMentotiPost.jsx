@@ -1,55 +1,122 @@
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
-import CommentList from "../components/Write/StudyCommentList";
+import SendIcon from "@mui/icons-material/Send";
+import MentotiCommentList from "../components/Write/MentotiCommentList";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { api } from "../utils/customAxios";
 
 const DetailMentotiPost = () => {
-  const location = useLocation();
-  const { post } = location.state; // 전달받은 post 데이터
+  const { postId } = useParams();
+
+  const [postData, setPostData] = useState([]); // GET 한 스터디 포스트를 저장할 상태
+  const [title, setTitle] = useState("");
+  const [isCommited, setIsCommited] = useState(false);
+
+  const getDetailStudy = async () => {
+    const response = await api.get(`/study/${postId}`);
+    console.log(response);
+    setPostData(response.data);
+  };
+
+  useEffect(() => {
+    getDetailStudy();
+  }, []);
+
+  if (!postData) {
+    return null;
+  }
+
+  const handleInputCommit = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const handleCommentSubmit = () => {
+    setIsCommited(true);
+    const commentData = {
+      contents: title, // 사용자가 입력한 동적인 값
+    };
+
+    api
+      .post(`/user/study/${postId}/talk/write`, commentData)
+      .then((response) => {
+        console.log("댓글이 성공적으로 전송되었습니다.", response.data);
+        setIsCommited(false);
+      })
+      .catch((error) => {
+        console.error("댓글 전송에 실패했습니다.", error);
+        // 실패 시 처리 로직
+      });
+    // console.log(commentData);
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await api.get(`/user/study/${postId}/heart`);
+      console.log("좋아요 성공", response.data);
+
+      setPostData((prevData) => ({
+        ...prevData,
+        heartNum:
+          response.data === "하트 누름"
+            ? prevData.heartNum + 1
+            : response.data === "하트 지움"
+            ? prevData.heartNum - 1
+            : prevData.heartNum,
+      }));
+    } catch (error) {
+      console.error("좋아요 실패", error);
+    }
+  };
 
   return (
     <>
-      <PostListBlock>
+      <PostBlock>
         <PostItem
-          key={post.id}
-          title={post.title}
-          body={post.body}
-          profilePic={post.profilePic}
-          userName={post.userName}
-          roleTags={post.roleTags}
-          subjectTags={post.subjectTags}
-          chooseDateTags={post.chooseDateTags}
-          createdAt={post.createdAt}
-          likes={post.likes}
-          comments={post.comments}
+          key={postId}
+          title={postData.title}
+          contents={postData.contents}
+          writer={postData.writer}
+          subject={postData.subject}
+          role={postData.role}
+          frequency={postData.frequency}
+          heartNum={postData.heartNum}
+          commentNum={postData.commentNum}
+          onLike={handleLike}
         />
-      </PostListBlock>
-      <CommentList />
+      </PostBlock>
+      <MentotiCommentList postId={postId} isCommited={isCommited} />
+      <CommentContainer>
+        <InputContainer>
+          <TitleInput
+            placeholder="댓글을 입력해주세요."
+            onChange={handleInputCommit}
+          />
+          <CommitButton onClick={handleCommentSubmit}>
+            <StyledCommitIcon />
+          </CommitButton>
+        </InputContainer>
+      </CommentContainer>
     </>
   );
 };
 
 const PostItem = ({
   title,
-  body,
-  profilePic,
-  userName,
-  roleTags,
-  subjectTags,
-  chooseDateTags,
-  createdAt,
-  likes,
-  comments,
+  contents,
+  writer,
+  subject,
+  frequency,
+  role,
+  heartNum,
+  commentNum,
+  onLike,
 }) => {
-  const handleLikes = () => {
-    console.log("좋아요!");
-  };
-
   return (
     <PostItemBlock>
       <UserInfo>
-        <ProfilePic src={profilePic} alt="profile" />
+        <ProfilePic alt="profile" />
         <div
           style={{
             display: "flex",
@@ -58,70 +125,69 @@ const PostItem = ({
             width: "100%",
           }}
         >
-          <UserName>{userName}</UserName>
-          <DateInfo>{createdAt}</DateInfo>
+          <UserName>{writer}</UserName>
         </div>
       </UserInfo>
       <h2>{title}</h2>
-      <p>{body}</p>
+      <p>{contents}</p>
       <TagList>
-        {roleTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
-        {subjectTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
-        {chooseDateTags.map((tag, index) => (
-          <Tag key={index}>{tag}</Tag>
-        ))}
+        <Tag>{role}</Tag>
+        <Tag>{subject}</Tag>
+        <Tag>{frequency}</Tag>
       </TagList>
       <PostStats>
-        <LikesButton onClick={handleLikes}>
-          <LikesIcon />
-          <StatsItem>{likes}</StatsItem>
+        <LikesButton onClick={onLike}>
+          <FavoriteIcon
+            sx={{
+              color: "#929292",
+              width: "20px",
+              height: "20px",
+            }}
+          />
         </LikesButton>
-        <CommentsStats>
-          <CommentsIcon />
-          <StatsItem>{comments}</StatsItem>
-        </CommentsStats>
+        <StatsItem>{heartNum}</StatsItem>
+        <ChatBubbleOutlineRoundedIcon
+          sx={{
+            color: "#929292",
+            width: "20px",
+            height: "20px",
+          }}
+        />
+        <StatsItem>{commentNum}</StatsItem>
       </PostStats>
     </PostItemBlock>
   );
 };
 
-const PostListBlock = styled.div`
-  display: flex;
-  justify-content: center; /* 가운데 정렬 */
+const PostBlock = styled.div`
   border-bottom: 1px solid #d9d9d9;
   width: 100%;
-  height: 280px;
-  margin-top: 20px;
+  height: 220px;
   font-size: 12px;
-  padding: 0;
-  flex-direction: column;
 `;
 
 const PostItemBlock = styled.div`
-  display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 3rem;
-  &:first-child {
-    padding-top: 0;
+  height: 200px;
+  padding: 1rem;
+  & + & {
+    border-top: 3px solid #d9d9d9;
   }
   h2 {
     color: #000;
     font-family: Inter;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 400;
     line-height: normal;
   }
   p {
     color: #000;
     font-family: Inter;
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
+    font-weight: 400;
     line-height: normal;
   }
 `;
@@ -129,7 +195,7 @@ const PostItemBlock = styled.div`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 30px; // 포스트 제목 위에 약간의 여백을 줍니다.
+  margin-bottom: 20px; // 포스트 제목 위에 약간의 여백을 줍니다.
 `;
 
 const ProfilePic = styled.img`
@@ -156,9 +222,9 @@ const TagList = styled.div`
 `;
 
 const Tag = styled.div`
-  min-width: 50px;
+  min-width: 60px;
   border-radius: 8px;
-  background: #dff0e0;
+  background: #efefef;
   height: 19px;
   flex-shrink: 0;
   font-size: 12px;
@@ -169,6 +235,7 @@ const Tag = styled.div`
   color: black;
 `;
 
+/*
 const DateInfo = styled.span`
   color: #6e6e6e;
   font-family: Inter;
@@ -178,27 +245,22 @@ const DateInfo = styled.span`
   line-height: normal;
   width: 70px;
 `;
+*/
 
 const PostStats = styled.div`
   display: flex;
-  align-items: center;
-  font-size: 12px;
+  width: 100%;
+  justify-content: right;
+  font-size: 9px;
   color: #666;
-  margin-top: 30px;
-  gap: 10px;
 `;
 
 const StatsItem = styled.span`
-  margin-left: 3px; // 아이템 사이의 간격 조절
-  margin-right: 3px; // 아이템 사이의 간격 조절
+  margin-left: 10px; // 아이템 사이의 간격 조절
+  margin-right: 30px; // 아이템 사이의 간격 조절
   display: flex;
   align-items: center;
-`;
-
-const LikesIcon = styled(FavoriteBorderIcon)`
-  width: 8px;
-  height: 8px;
-  color: #b3b3b3;
+  font-size: 12px;
 `;
 
 const LikesButton = styled.button`
@@ -206,22 +268,53 @@ const LikesButton = styled.button`
   align-items: center;
   font-size: 12px;
   color: #666;
-  margin-top: 50px;
   gap: 5px;
 `;
 
-const CommentsIcon = styled(ChatBubbleOutlineRoundedIcon)`
-  width: 8px;
-  height: 8px;
-  color: #b3b3b3;
-`;
-const CommentsStats = styled.div`
-  display: flex;
+const CommentContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  justify-content: center;
   align-items: center;
-  font-size: 12px;
-  color: #666;
-  margin-top: 50px;
-  gap: 5px;
+`;
+const InputContainer = styled.div`
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: fixed;
+  bottom: 20px;
+  z-index: 1000;
+`;
+
+const TitleInput = styled.input`
+  display: flex;
+  width: 100%;
+  height: 40px;
+  padding-left: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--light-gray-gray-300, #e1e1e8);
+  background: var(--light-gray-gray-000, #fff);
+`;
+
+const StyledCommitIcon = styled(SendIcon)`
+  position: absolute;
+  margin-left: 21rem;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  color: #359c3a;
+`;
+
+const CommitButton = styled.div`
+  display: flex;
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  justify-content: space-between;
 `;
 
 export default DetailMentotiPost;

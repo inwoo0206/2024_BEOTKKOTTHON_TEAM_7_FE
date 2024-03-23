@@ -52,6 +52,20 @@ const StyledText = styled.div`
   line-height: normal;
   margin-bottom: 5px;
 `;
+const StyledTag = styled.div`
+  min-width: 60px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  height: 19px;
+  flex-shrink: 0;
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  color: black;
+  background: #eee;
+`;
 
 const TextBlock = styled.div`
   margin-left: 50px;
@@ -87,11 +101,11 @@ const ListItem = ({ subject, score, profilePic, userName }) => {
       <TextBlock>
         <SubContainer>
           <StyledText>분야:</StyledText>
-          <StyledText>{subject}</StyledText>
+          <StyledTag>{subject}</StyledTag>
         </SubContainer>
         <SubContainer>
           <StyledText>점수:</StyledText>
-          <StyledText>{score}</StyledText>
+          <StyledTag>{score}</StyledTag>
         </SubContainer>
       </TextBlock>
       {modalOpen && <ModalPage setModalOpen={setModalOpen} />}
